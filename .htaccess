@@ -1,0 +1,60 @@
+# Enable URL rewriting
+RewriteEngine On
+
+# Set the base directory if the site is in a subdirectory
+# RewriteBase /
+
+# Handle product detail pages - redirect requests for /products/[handle] to products/index.html
+# This rule processes URLs like /products/my-product and serves the products/index.html file
+RewriteRule ^products/([^/\.]+)/?$ products/index.html [L]
+
+# If requesting a directory that exists and contains an index.html, use it
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.html -f
+RewriteRule ^(.+)/?$ $1/index.html [L]
+
+# If the request does not include .html but the .html file exists, use it
+# This handles URLs like /page to serve page.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# Prevent directory browsing 
+Options -Indexes
+
+# Set default character encoding
+AddDefaultCharset UTF-8
+
+# Properly handle 404 errors
+ErrorDocument 404 /404.html
+
+# Set correct content type for JavaScript and CSS
+<IfModule mod_mime.c>
+  AddType application/javascript .js
+  AddType text/css .css
+</IfModule>
+
+# Enable CORS for assets if needed
+<IfModule mod_headers.c>
+  <FilesMatch "\.(js|css|jpg|png|gif|woff|woff2|ttf|svg|eot)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+</IfModule>
+
+# Cache control for static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpg "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/gif "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType application/x-font-woff "access plus 1 month"
+  ExpiresByType application/x-font-woff2 "access plus 1 month"
+  ExpiresByType application/x-font-ttf "access plus 1 month"
+  ExpiresByType application/x-font-opentype "access plus 1 month"
+  ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
+</IfModule> 

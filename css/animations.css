@@ -1,0 +1,87 @@
+/* Reference any CSS keyframe animations here */
+
+@media (prefers-reduced-motion: no-preference) {
+	/* Run full animations when user hasn't specifically requested reduced motion */
+  
+  @keyframes marquee {
+  	0% { transform: translateX(0%); }
+    100% { transform: translateX( calc( -100% - var(--marquee-gap) ) ); }
+  }
+}
+
+.marquee-track:hover .marquee_list {
+	animation-play-state: paused;
+}
+
+@media (pointer: fine) {
+
+/* Base state for the image */
+[data-image-hover] img {
+	width: 100%;
+  height: 100%;
+  transform: scale(1);
+  transition: transform 1000ms cubic-bezier(.19, 1, .22, 1);
+}
+
+/* On hover of the parent, scale the child element */
+[data-image-hover]:hover img {
+  transform: scale(1.2);
+}
+
+/*
+.product-card_image-wrapper:not([data-product-focus="true"]):hover .product-card_image:not(.product-focus) {
+	opacity: 0;
+}
+
+.product-card_image-wrapper:not([data-product-focus="true"]):hover .product-card_image.product-focus {
+	transform: scale(1.1);
+}
+
+.product-card_image-wrapper[data-product-focus="true"] .product-card_image.product-focus {
+	z-index: 3;
+}
+
+.product-card_image-wrapper[data-product-focus="true"]:hover .product-card_image.product-focus {
+	opacity: 0;
+}
+
+.product-card_image-wrapper[data-product-focus="true"]:hover .product-card_image:not(.product-focus) {
+	transform: scale(1.1);
+}
+*/
+/* Global toggle logic with :has() scoped to .filter_layout */
+
+.filter_layout:has(input[value="on-model"]:checked) .product-card_image.product-view {
+  z-index: 1;
+  opacity: 0;
+}
+
+.filter_layout:has(input[value="on-model"]:checked) .product-card_image.on-model {
+  z-index: 2;
+  opacity: 1;
+}
+
+.filter_layout:has(input[value="product"]:checked) .product-card_image.on-model {
+  z-index: 1;
+  opacity: 0;
+}
+
+.filter_layout:has(input[value="product"]:checked) .product-card_image.product-view {
+  z-index: 2;
+  opacity: 1;
+}
+
+
+
+
+
+.footer_links-list:has(a:hover) a:not(:hover) {
+	opacity: 0.5;
+}
+
+.button:hover .button_dot {
+	width: 100%;
+  height: 100%;
+}
+
+}

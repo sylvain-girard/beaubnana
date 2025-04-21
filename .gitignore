@@ -1,0 +1,17 @@
+# Keep only system files and dependencies in gitignore
+# This allows development files to be committed to the repository
+
+# Node modules and dependencies
+node_modules/
+package-lock.json
+
+# System files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build artifacts
+dist/
+build/
+.cache/

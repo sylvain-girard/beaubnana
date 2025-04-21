@@ -1,0 +1,8 @@
+[data-theme="alternate"]::after {
+  content: "";
+  position: absolute;
+  inset: 0rem;
+  background-color: var(--color--elements--background-primary);
+  border-radius: var(--radius--regular);
+  z-index: -1;
+}

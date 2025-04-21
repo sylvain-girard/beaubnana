@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+THIS IS THE FIRST TIME ATTEMTING A WORKFLOW LIKE THIS, ASSUME THAT SOME THINGS MAY REQUIRE EXTRA INFORMATION OR CONTEXT THAT SHOULD BE REQUESTED
+
+This project is a conversion from an (unfinished) Webflow Ecommerce build, to a front end that utilises Shopify as the backend. The function of Shopify will just be to host the product details, and they will be served through the UI that has been created in Webflow. The site is hosted on Github Pages. 
+
+The conversion was already started in Webflow, with the Add to cart button being replaced by the Shopify Buy button that had a dynamic ID linked to a CMS field that housed the Shopify product ID for the products. For example in the url 'https://admin.shopify.com/store/0wrz46-0q/products/7754559848505' '7754559848505' was added as a value in the product id field that determined which product would be added to the cart when the button was clicked. There was no connection to Shopify elsewhere on the site though, only on these product pages, so this of course may have to change now.
+
+Some .html files that were part of the Webflow Ecommerce build are retained, though can be ignored when they're in the ignore folder.
+
+We want to keep this as technically simple as possible and not overcomplicate anything, while still achieving the functionality required.
+
+Remember to consider which files should be deployed and alter the [deploy.yml](mdc:.github/workflows/deploy.yml) accordingly.
+
+Shopify Storefront access token: 274905cf05e4e73a7e1993be2fffc9d1
+Shopify Admin API access token: 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 (this one will need to be used securely)
+Domain: 0wrz46-0q.myshopify.com

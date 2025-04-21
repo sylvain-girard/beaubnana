@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /styleguide/
+Disallow: /templates/
+Disallow: /ignore/
+
+# Allow all other content
+Allow: / 
