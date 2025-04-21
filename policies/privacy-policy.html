@@ -310,16 +310,21 @@
 
     <script src="../js/shopify.js"></script>
     <script src="../js/product-router.js"></script>
+    <script src="../js/include.js" defer></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Initialize the product router
-        if (window.productRouter) {
-          window.productRouter.initialize();
-        } else {
-          console.error('Product router not found');
-        }
+        // Allow time for includes and scripts to load
+        setTimeout(function () {
+          // Initialize the product router if available
+          if (window.productRouter) {
+            window.productRouter.initialize();
+          } else {
+            console.log("Creating new ProductRouter instance");
+            window.productRouter = new ProductRouter();
+            window.productRouter.initialize();
+          }
+        }, 300); // Increased timeout to ensure scripts are loaded
       });
     </script>
-    <script src="../js/include.js" defer></script>
   </body>
 </html>
