@@ -76,6 +76,10 @@ jobs:
           rm -rf ./deploy-temp/TEMPLATE_CONVENTIONS.md
           rm -f ./deploy-temp/.env
           
+          # Ensure _includes directory is not excluded
+          mkdir -p ./deploy-temp/_includes
+          cp -r ./_includes/* ./deploy-temp/_includes/ 2>/dev/null || true
+          
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
