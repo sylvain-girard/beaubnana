@@ -43,6 +43,7 @@ jobs:
           
           # Copy everything to the temp directory first
           cp -r ./* ./deploy-temp/ 2>/dev/null || true
+          cp .nojekyll ./deploy-temp/ 2>/dev/null || true
           
           # Remove development directories
           rm -rf ./deploy-temp/styleguide/
@@ -51,6 +52,7 @@ jobs:
           rm -rf ./deploy-temp/scripts/
           rm -rf ./deploy-temp/tools/
           rm -rf ./deploy-temp/_drafts/
+          rm -rf ./deploy-temp/_includes/
           
           # Remove template and development files by pattern
           find ./deploy-temp -name "template.*" -type f -delete
@@ -75,10 +77,6 @@ jobs:
           rm -rf ./deploy-temp/.gitignore
           rm -rf ./deploy-temp/TEMPLATE_CONVENTIONS.md
           rm -f ./deploy-temp/.env
-          
-          # Ensure _includes directory is not excluded
-          mkdir -p ./deploy-temp/_includes
-          cp -r ./_includes/* ./deploy-temp/_includes/ 2>/dev/null || true
           
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4

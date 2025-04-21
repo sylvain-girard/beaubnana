@@ -45,8 +45,8 @@ document.addEventListener('DOMContentLoaded', function() {
   };
 
   // Include navbar
-  includeHTML('navbar-placeholder', '_includes/navbar.html');
+  includeHTML('navbar-placeholder', 'includes/navbar.html');
 
   // Include footer
-  includeHTML('footer-placeholder', '_includes/footer.html'); 
+  includeHTML('footer-placeholder', 'includes/footer.html'); 
 }); 
