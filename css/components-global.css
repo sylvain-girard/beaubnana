@@ -1,0 +1,158 @@
+/* Accordions */
+.accordions_item_component[open] .accordions_item_icon {
+	transform: rotate(-180deg);
+}
+
+  /**
+  * Intro Text Animation  var(--color--elements--text-alternate)
+  */
+
+  .intro-text_text {
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(90deg, var(--color--elements--text-secondary) 90%, transparent);
+    animation: intro-text-color-fill linear both;
+    animation-timeline: view();
+    animation-range: cover 20% contain 70%;
+  }
+  @keyframes intro-text-color-fill {
+    from { background-size: 0% 100%; }
+    to { background-size: 110% 100%; }
+  }
+  
+ .filter_form-text-radio-icon:not(:checked) + .filter_form-text-radio-label {
+  	opacity: 0.5;
+  }
+  
+[data-product-focus]:hover .product-card_image.product-focus {
+	opacity: 0;
+}
+
+/* Color Filter Checkbox Styles */
+.filter_form-checkbox2 input:checked ~ .filters_checkbox-indicator {
+    opacity: 1;
+}
+
+.filters_checkbox-indicator {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Radio Button Styles */
+.filter_form-radio1 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.filter_form-radio1-icon {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--colors--main--dark-purple);
+    border-radius: 50%;
+    margin-right: 8px;
+    position: relative;
+}
+
+.filter_form-radio1 input:checked ~ .filter_form-radio1-icon {
+    border-color: var(--colors--main--pink);
+}
+
+.filter_form-radio1 input:checked ~ .filter_form-radio1-icon:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: var(--colors--main--pink);
+    border-radius: 50%;
+}
+
+/* Base Modal/Dropdown Styles */
+.modal-base {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  z-index: 999;
+  background-color: var(--color--elements--background-secondary);
+  border-radius: var(--radius--regular);
+  transform: translateY(3rem);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Filter Modal Styles */
+.filter_filters-modal {
+  z-index: 999;
+  padding-top: var(--spacing--0-25);
+  padding-bottom: var(--spacing--0-25);
+  border-top-left-radius: var(--radius--regular);
+  border-top-right-radius: var(--radius--regular);
+  border-bottom-left-radius: var(--radius--regular);
+  border-bottom-right-radius: var(--radius--regular);
+  background-color: var(--color--elements--background-secondary);
+  font-size: var(--text-size-responsive--xl);
+  width: 100cqw;
+  max-height: 100vh;
+  margin-top: .5rem;
+  position: absolute;
+  overflow: clip;
+  transform: translateY(3rem) !important;
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.filter_filters-modal.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+/* Sort Dropdown Styles */
+.dropdown_dropdown-list {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(3rem) !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.dropdown_dropdown-list.is-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+  transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.filter_filters-button {
+  position: relative;
+  z-index: 1;
+}
+
+.filter_button-wrapper {
+  position: relative;
+}
+
+/* Sort Options */
+.sort-option {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sort-option:hover {
+  background-color: var(--color--elements--background-primary);
+}
+
+.sort-option.selected {
+  color: var(--colors--main--pink);
+}
+
+.shopify-button-wrapper iframe {
+  height: 100% !important;
+}
+.shopify-buy__btn-wrapper {
+  margin-top: 0 !important;
+}

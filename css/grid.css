@@ -1,0 +1,40 @@
+:root {
+  --grid--column-count: 12;
+}
+.is-grid-full-width {
+  --grid--column-total-gap: calc(
+    var(--grid--column-gap) * (var(--grid--column-count) - 1)
+  );
+  --grid--edge-gutter: minmax(
+    calc(var(--page-padding) - var(--grid--column-gap)),
+    1fr
+  );
+  --grid--container-columns: minmax(
+    0px,
+    calc(
+      (var(--container--large) - var(--grid--column-total-gap)) /
+        var(--grid--column-count)
+    )
+  );
+  grid-template-columns:
+    [full-width-start] var(--grid--edge-gutter)
+    [container-start] repeat(
+      var(--grid--column-count),
+      var(--grid--container-columns)
+    )
+    [container-end] var(--grid--edge-gutter) [full-width-end];
+}
+/** Tablet multipliers for fonts */
+@media screen and (max-width: 991px) {
+  :root {
+    --grid--column-count: 8;
+  }
+}
+/** Mobile landscape */
+@media screen and (max-width: 767px) {
+  :root {
+    --grid--column-count: 4;
+    --grid--column-gap: var(--spacing--1);
+    --grid--row-gap: var(--spacing--2);
+  }
+}

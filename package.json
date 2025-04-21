@@ -1,0 +1,28 @@
+{
+  "name": "beau-banana",
+  "version": "1.0.0",
+  "description": "Beau Banana Shopify Integration",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "build:products": "node build-product-pages.js",
+    "build:policies": "node build-policy-pages.js",
+    "update:config": "node update-config.js",
+    "build": "npm run update:config && npm run build:products && npm run build:policies"
+  },
+  "keywords": [
+    "shopify",
+    "ecommerce"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^4.18.2",
+    "glob": "^10.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
