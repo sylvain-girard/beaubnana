@@ -1,9 +1,25 @@
 document.addEventListener('DOMContentLoaded', function() {
+  // Get the base path for GitHub Pages
+  const getBasePath = () => {
+    // If running locally, base path is empty
+    // If on GitHub Pages, get the repository name from the URL
+    const pathSegments = window.location.pathname.split('/');
+    // For GitHub Pages, the first segment will be the repo name (e.g., /beaubnana/)
+    // For custom domains, this will be empty, which is what we want
+    if (pathSegments.length > 1 && pathSegments[1] !== '') {
+      return `/${pathSegments[1]}`;
+    }
+    return '';
+  };
+
+  const basePath = getBasePath();
+  
   // Function to fetch and include HTML content
   const includeHTML = (elementId, filePath) => {
     const element = document.getElementById(elementId);
     if (element) {
-      fetch(`/${filePath}`)
+      // Use the detected base path with the include path
+      fetch(`${basePath}/${filePath}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status} loading ${filePath}`);
