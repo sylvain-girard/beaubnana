@@ -12,6 +12,8 @@ Thumbs.db
 .idea/
 .cursor/rules/scope.mdc
 
+# Environment variables
+.env
 
 # Build artifacts
 dist/

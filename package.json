@@ -8,8 +8,8 @@
     "dev": "nodemon server.js",
     "build:products": "node build-product-pages.js",
     "build:policies": "node build-policy-pages.js",
-    "update:footers": "node update-footers.js",
-    "build": "npm run build:products && npm run build:policies && npm run update:footers"
+    "update:config": "node update-config.js",
+    "build": "npm run update:config && npm run build:products && npm run build:policies"
   },
   "keywords": [
     "shopify",
@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^4.18.2",
     "glob": "^10.4.5"
   },

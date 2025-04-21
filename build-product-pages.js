@@ -2,11 +2,12 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+require('dotenv').config();
 
 // Shopify API configuration
 const SHOPIFY_CONFIG = {
-    domain: '0wrz46-0q.myshopify.com',
-    storefrontAccessToken: '274905cf05e4e73a7e1993be2fffc9d1'
+    domain: process.env.SHOPIFY_DOMAIN || '0wrz46-0q.myshopify.com',
+    storefrontAccessToken: process.env.SHOPIFY_STOREFRONT_TOKEN
 };
 
 // GraphQL query to fetch products

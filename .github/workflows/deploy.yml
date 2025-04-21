@@ -20,6 +20,13 @@ jobs:
       - name: Install Dependencies
         run: npm ci
         if: hashFiles('package.json') != ''
+        
+      - name: Build Site
+        run: npm run build
+        env:
+          SHOPIFY_DOMAIN: 0wrz46-0q.myshopify.com
+          SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_TOKEN }}
+          SHOPIFY_ADMIN_TOKEN: ${{ secrets.SHOPIFY_ADMIN_TOKEN }}
 
       # This step filters out development files before deployment
       # This allows dev files to exist in the repository but not on the live site
@@ -61,6 +68,7 @@ jobs:
           rm -rf ./deploy-temp/.github/
           rm -rf ./deploy-temp/.gitignore
           rm -rf ./deploy-temp/TEMPLATE_CONVENTIONS.md
+          rm -f ./deploy-temp/.env
           
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4

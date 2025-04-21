@@ -2,12 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+require('dotenv').config();
 
 // Shopify API configuration
 const SHOPIFY_CONFIG = {
-    domain: '0wrz46-0q.myshopify.com',
-    storefrontAccessToken: '274905cf05e4e73a7e1993be2fffc9d1',
-    adminApiAccessToken: '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'
+    domain: process.env.SHOPIFY_DOMAIN || '0wrz46-0q.myshopify.com',
+    storefrontAccessToken: process.env.SHOPIFY_STOREFRONT_TOKEN,
+    adminApiAccessToken: process.env.SHOPIFY_ADMIN_TOKEN
 };
 
 // Function to make a request to the Shopify Admin API

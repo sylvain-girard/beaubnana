@@ -46,6 +46,19 @@ Deployment is handled automatically by GitHub Actions when pushing to the main b
 
 See `.github/workflows/deploy.yml` for the deployment configuration.
 
+## Setup
+
+This project uses environment variables for secure API tokens. To set up:
+
+1. Create a `.env` file in the project root (this file is ignored by git)
+2. Add the following environment variables:
+   ```
+   SHOPIFY_DOMAIN=0wrz46-0q.myshopify.com
+   SHOPIFY_STOREFRONT_TOKEN=your_storefront_token
+   SHOPIFY_ADMIN_TOKEN=your_admin_token
+   ```
+3. For GitHub deployment, add these as repository secrets
+
 ## Shopify Integration
 
 ### Storefront API
@@ -53,7 +66,7 @@ See `.github/workflows/deploy.yml` for the deployment configuration.
 The website connects to Shopify using the Storefront API with the following credentials:
 
 - Domain: `0wrz46-0q.myshopify.com`
-- Storefront Access Token: `274905cf05e4e73a7e1993be2fffc9d1`
+- Storefront Access Token: Stored as environment variable (see Setup section)
 
 ### Buy Button Implementation
 

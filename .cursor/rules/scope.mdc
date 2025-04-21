@@ -15,6 +15,4 @@ We want to keep this as technically simple as possible and not overcomplicate an
 
 Remember to consider which files should be deployed and alter the [deploy.yml](mdc:.github/workflows/deploy.yml) accordingly.
 
-Shopify Storefront access token: 274905cf05e4e73a7e1993be2fffc9d1
-Shopify Admin API access token: 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 (this one will need to be used securely)
 Domain: 0wrz46-0q.myshopify.com

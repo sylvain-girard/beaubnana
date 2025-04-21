@@ -1,3 +1,6 @@
+// This file uses configurations from config.js
+// Make sure to import config.js before this file in your HTML
+
 // Shopify Storefront API configuration
 const SHOPIFY_CONFIG = {
     domain: '0wrz46-0q.myshopify.com',
