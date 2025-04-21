@@ -1,32 +1,48 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Get the base path for GitHub Pages
-  const getBasePath = () => {
-    // If running locally, base path is empty
-    // If on GitHub Pages, get the repository name from the URL
-    const pathSegments = window.location.pathname.split('/');
-    // For GitHub Pages, the first segment will be the repo name (e.g., /beaubnana/)
-    // For custom domains, this will be empty, which is what we want
-    if (pathSegments.length > 1 && pathSegments[1] !== '') {
-      return `/${pathSegments[1]}`;
+  console.log('Include.js loaded and running');
+  
+  // Determine the path prefix based on the current page's directory depth
+  const getRelativePath = () => {
+    // Get the current path
+    const path = window.location.pathname;
+    console.log('Current path:', path);
+    
+    // Simple check: if the path contains /products/ or /policies/ or any subdirectory
+    // we need to go up one level
+    if (path.includes('/products/') || path.includes('/policies/') || 
+        path.match(/\/[^\/]+\/[^\/]+\.html$/)) {
+      console.log('Detected page in subdirectory, using relative path: ../');
+      return '../';
     }
+    
+    // If we're at the root level, no prefix needed
+    console.log('Detected page at root level, using empty relative path');
     return '';
   };
-
-  const basePath = getBasePath();
+  
+  const relativePath = getRelativePath();
+  console.log('Path prefix:', relativePath);
   
   // Function to fetch and include HTML content
   const includeHTML = (elementId, filePath) => {
     const element = document.getElementById(elementId);
+    console.log('Looking for element:', elementId, element ? 'Found' : 'Not found');
+    
     if (element) {
-      // Use the detected base path with the include path
-      fetch(`${basePath}/${filePath}`)
+      // Prepend the relative path to the include path
+      const url = `${relativePath}${filePath}`;
+      console.log('Fetching:', url);
+      
+      fetch(url)
         .then(response => {
+          console.log('Response status:', response.status, 'for', url);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status} loading ${filePath}`);
           }
           return response.text();
         })
         .then(data => {
+          console.log('Successfully loaded:', filePath);
           element.innerHTML = data;
           
           // If this is the footer, set the current year
@@ -44,9 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   };
 
-  // Include navbar
-  includeHTML('navbar-placeholder', '_includes/navbar.html');
+  // Check if elements exist
+  console.log('Navbar placeholder exists:', !!document.getElementById('navbar-placeholder'));
+  console.log('Footer placeholder exists:', !!document.getElementById('footer-placeholder'));
 
-  // Include footer
-  includeHTML('footer-placeholder', '_includes/footer.html'); 
+  // Include navbar and footer
+  includeHTML('navbar-placeholder', 'includes/navbar.html');
+  includeHTML('footer-placeholder', 'includes/footer.html'); 
 }); 

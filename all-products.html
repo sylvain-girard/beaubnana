@@ -455,14 +455,17 @@
 
     <script src="js/shopify.js"></script>
     <script src="js/product-router.js"></script>
+    <script src="js/include.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Load the products
-        window.ShopifyAPI.displayAllProducts();
-        // Initialize the product router
-        window.productRouter.initialize();
+        // Allow time for includes to load
+        setTimeout(function () {
+          // Load the products
+          window.ShopifyAPI.displayAllProducts();
+          // Initialize the product router
+          window.productRouter.initialize();
+        }, 200);
       });
     </script>
-    <script src="js/include.js" defer></script>
   </body>
 </html>
