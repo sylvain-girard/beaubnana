@@ -7,17 +7,35 @@ document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
     console.log('Current path:', path);
     
-    // Simple check: if the path contains /products/ or /policies/ or any subdirectory
-    // we need to go up one level
-    if (path.includes('/products/') || path.includes('/policies/') || 
-        path.match(/\/[^\/]+\/[^\/]+\.html$/)) {
-      console.log('Detected page in subdirectory, using relative path: ../');
-      return '../';
-    }
+    // Check if we're on GitHub Pages with a repo name in the path (like /beaubnana/)
+    const pathParts = path.split('/').filter(Boolean);
+    const baseRepoName = 'beaubnana'; // The repository name
     
-    // If we're at the root level, no prefix needed
-    console.log('Detected page at root level, using empty relative path');
-    return '';
+    // First check if we're hosted under the repo name
+    if (pathParts.length > 0 && pathParts[0] === baseRepoName) {
+      // We're on GitHub Pages with the repo name in the URL
+      
+      if (pathParts.length > 1 && (pathParts[1] === 'products' || pathParts[1] === 'policies')) {
+        // In a subdirectory: /beaubnana/products/ or /beaubnana/policies/
+        console.log('Detected page in subdirectory on GitHub Pages, using base-adjusted path');
+        return '/beaubnana/';
+      } else {
+        // At root level: /beaubnana/
+        console.log('Detected page at repo root level on GitHub Pages');
+        return '/beaubnana/';
+      }
+    } else {
+      // Regular local or custom domain without repo in path
+      if (path.includes('/products/') || path.includes('/policies/') || 
+          path.match(/\/[^\/]+\/[^\/]+\.html$/)) {
+        console.log('Detected page in subdirectory, using relative path: ../');
+        return '../';
+      }
+      
+      // If we're at the root level, no prefix needed
+      console.log('Detected page at root level, using empty relative path');
+      return '';
+    }
   };
   
   const relativePath = getRelativePath();

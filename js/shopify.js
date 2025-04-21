@@ -1732,6 +1732,12 @@ async function displayAllProducts() {
     
     // Clear existing items
     filterFeed.innerHTML = '';
+    
+    // Check if we're on GitHub Pages and adjust paths accordingly
+    const isGitHubPages = window.location.hostname === "sylvgira.com" || 
+                         window.location.pathname.startsWith('/beaubnana/');
+    const basePath = isGitHubPages ? '/beaubnana' : '';
+    console.log("Shopify basePath for product links:", basePath);
 
     products.forEach(product => {
         const price = product.priceRange.minVariantPrice.amount;
@@ -1747,7 +1753,7 @@ async function displayAllProducts() {
         
         productCard.innerHTML = `
             <div class="product-card">
-                <a href="/products/${product.handle}" 
+                <a href="${basePath}/products/${product.handle}" 
                    data-product-handle="${product.handle}"
                    class="product-card_link w-inline-block">
                     <div data-inner-rad="top-left" class="product-card_tag">
