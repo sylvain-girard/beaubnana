@@ -10,7 +10,8 @@ package-lock.json
 Thumbs.db
 .vscode/
 .idea/
-.cursor/rules
+.cursor/rules/scope.mdc
+
 
 # Build artifacts
 dist/
