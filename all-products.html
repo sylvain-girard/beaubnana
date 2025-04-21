@@ -458,13 +458,24 @@
     <script src="js/include.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Allow time for includes to load
+        // Allow time for includes and scripts to load
         setTimeout(function () {
           // Load the products
-          window.ShopifyAPI.displayAllProducts();
-          // Initialize the product router
-          window.productRouter.initialize();
-        }, 200);
+          if (window.ShopifyAPI) {
+            window.ShopifyAPI.displayAllProducts();
+          } else {
+            console.error("ShopifyAPI not available");
+          }
+
+          // Initialize the product router if available
+          if (window.productRouter) {
+            window.productRouter.initialize();
+          } else {
+            console.log("Creating new ProductRouter instance");
+            window.productRouter = new ProductRouter();
+            window.productRouter.initialize();
+          }
+        }, 300); // Increased timeout to ensure scripts are loaded
       });
     </script>
   </body>

@@ -4,12 +4,20 @@ class ProductRouter {
         console.log("Product Router initialized");
         this.shopifyDomain = 'beau-banana.myshopify.com';
         this.shopifyToken = '594822dab94e9f663f9df864058e7573';
-        this.baseProductPath = '/products/';
-        this.allProductsPath = "/all-products.html";
+        
+        // Check if we're on GitHub Pages and adjust paths accordingly
+        const isGitHubPages = window.location.hostname === "sylvgira.com" || 
+                             window.location.pathname.startsWith('/beaubnana/');
+        
+        this.basePath = isGitHubPages ? '/beaubnana' : '';
+        console.log("Base path detected:", this.basePath);
+        
+        this.baseProductPath = `${this.basePath}/products/`;
+        this.allProductsPath = `${this.basePath}/all-products.html`;
         this.client = null;
-        this.productDetailPage = "/products/";
-        this.allProductsPage = "/all-products.html";
-        this.isProductDetailPage = window.location.pathname.includes(this.baseProductPath);
+        this.productDetailPage = `${this.basePath}/products/`;
+        this.allProductsPage = `${this.basePath}/all-products.html`;
+        this.isProductDetailPage = window.location.pathname.includes('/products/');
         
         // Initialize Shopify client
         this.client = ShopifyBuy.buildClient({
