@@ -7,6 +7,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const path = window.location.pathname;
     console.log('Current path:', path);
     
+    // Check if we're in local development mode (set via window.setScriptsENV)
+    const isLocalDev = localStorage.getItem('beaubananaEnv') === 'local';
+    
+    // If we're in local dev mode, simplify the path detection
+    if (isLocalDev) {
+      console.log('Running in local dev mode');
+      
+      // Simple path detection for local development
+      if (path.includes('/products/') || path.includes('/policies/')) {
+        console.log('Detected page in subdirectory, using relative path: ../');
+        return '../';
+      } else {
+        console.log('Detected page at root level, using empty relative path');
+        return '';
+      }
+    }
+    
+    // Production mode (GitHub Pages) path detection
     // Check if we're on GitHub Pages with a repo name in the path (like /beaubnana/)
     const pathParts = path.split('/').filter(Boolean);
     const baseRepoName = 'beaubnana'; // The repository name
@@ -25,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return '/beaubnana/';
       }
     } else {
-      // Regular local or custom domain without repo in path
+      // Regular path handling (custom domain or local without dev mode)
       if (path.includes('/products/') || path.includes('/policies/') || 
           path.match(/\/[^\/]+\/[^\/]+\.html$/)) {
         console.log('Detected page in subdirectory, using relative path: ../');

@@ -140,13 +140,13 @@
                         
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/67271361ab78afdf101705b0__E4_BA_A7_E5_93_81800X800-_E7_99_BD_E5_BA_95_E5_9B_BE-_E7_BA_A2_E8_89_B2.webp?v=1730887079" loading="lazy" alt="Smiley Face Earrings - Pink - Image 1" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/67271361ab78afdf101705b0__E4_BA_A7_E5_93_81800X800-_E7_99_BD_E5_BA_95_E5_9B_BE-_E7_BA_A2_E8_89_B2.webp?v=1745718592" loading="lazy" alt="Smiley Face Earrings - Pink - Image 1" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672b2edf8a5c3c9d66c4bd80_6.jpg?v=1730981170" loading="lazy" alt="Smiley Face Earrings - Pink - Image 2" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672b2edf8a5c3c9d66c4bd80_6.jpg?v=1745718592" loading="lazy" alt="Smiley Face Earrings - Pink - Image 2" class="product-header_image">
                         </div>
                     </div>
                 
@@ -188,13 +188,14 @@
                       <div class="spacer-1d5"></div>
                       <p>I’ve fallen in love with this sunlit smiley face. On every rough day, it seems to remind you, “Everything will be okay.” Crafted with colourful cotton yarn and ceramic seed beads, this cheerful little smiley brings a boost of good vibes.</p>
                       <div class="spacer-3"></div>
-                      <div class="button w-embed">
+                      <div class="button">
                         <div
-                          data-shopify-id="7754551230521"
+                          data-shopify-id="7405670563927"
                           id="product-component"
                           class="shopify-button-wrapper"
                         ></div>
                         <span class="button_text" style="pointer-events: none;">Add to Cart</span>
+                        <span class="button_dot"></span>
                       </div>
                       <div class="spacer-3"></div>
                       <div class="text-rich-text w-richtext">
@@ -234,29 +235,12 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
+    <script src="../js/dev-env.js"></script>
+    <script src="../js/config.js"></script>
+    <!-- Shopify Buy SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <script src="../js/shopify.js"></script>
-
-    <script>
-      // Wait for both DOM and ShopifyAPI to be ready
-      async function initializePage() {
-        try {
-          // Initialize Shopify Buy functionality
-          await window.ShopifyAPI.initShopifyBuy();
-          
-          // Additional product-specific initialization can go here
-          
-        } catch (error) {
-          console.error("Error initializing page:", error);
-        }
-      }
-
-      // Initialize when DOM is ready
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
-      } else {
-        initializePage();
-      }
-    </script>
+    <script src="../js/product-router.js"></script>
     <script src="../js/include.js" defer></script>
   </body>
 </html>

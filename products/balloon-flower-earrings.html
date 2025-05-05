@@ -140,37 +140,37 @@
                         
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/67270194da54fc946dfa51d8__E4_BA_A7_E5_93_81800X800-_E7_99_BD_E5_BA_95_E5_9B_BE.webp?v=1730809125" loading="lazy" alt="Balloon Flower Earrings - Image 1" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/67270194da54fc946dfa51d8__E4_BA_A7_E5_93_81800X800-_E7_99_BD_E5_BA_95_E5_9B_BE.webp?v=1745718714" loading="lazy" alt="Balloon Flower Earrings - Image 1" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672702c2363df89b80ca6709_1.jpg?v=1730980958" loading="lazy" alt="Balloon Flower Earrings - Image 2" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672702c2363df89b80ca6709_1.jpg?v=1745718714" loading="lazy" alt="Balloon Flower Earrings - Image 2" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672702c2466a6a373e1a441b_3.jpg?v=1730980958" loading="lazy" alt="Balloon Flower Earrings - Image 3" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672702c2466a6a373e1a441b_3.jpg?v=1745718714" loading="lazy" alt="Balloon Flower Earrings - Image 3" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672702c2dc6305cc1dfccefc_4.jpg?v=1730980958" loading="lazy" alt="Balloon Flower Earrings - Image 4" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672702c2dc6305cc1dfccefc_4.jpg?v=1745718714" loading="lazy" alt="Balloon Flower Earrings - Image 4" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672702c2e24754f69d09bdbb_7.jpg?v=1730980958" loading="lazy" alt="Balloon Flower Earrings - Image 5" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672702c2e24754f69d09bdbb_7.jpg?v=1745718714" loading="lazy" alt="Balloon Flower Earrings - Image 5" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672702c27cab3af512bda0d4_8.jpg?v=1730980958" loading="lazy" alt="Balloon Flower Earrings - Image 6" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672702c27cab3af512bda0d4_8.jpg?v=1745718714" loading="lazy" alt="Balloon Flower Earrings - Image 6" class="product-header_image">
                         </div>
                     </div>
                 
@@ -212,13 +212,14 @@
                       <div class="spacer-1d5"></div>
                       <p>Original balloon flower earrings, filled with cotton. The cotton yarn is eco-dyed with no additives, ensuring an environmentally friendly touch.</p>
                       <div class="spacer-3"></div>
-                      <div class="button w-embed">
+                      <div class="button">
                         <div
-                          data-shopify-id="7753853042745"
+                          data-shopify-id="7405671022679"
                           id="product-component"
                           class="shopify-button-wrapper"
                         ></div>
                         <span class="button_text" style="pointer-events: none;">Add to Cart</span>
+                        <span class="button_dot"></span>
                       </div>
                       <div class="spacer-3"></div>
                       <div class="text-rich-text w-richtext">
@@ -258,29 +259,12 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
+    <script src="../js/dev-env.js"></script>
+    <script src="../js/config.js"></script>
+    <!-- Shopify Buy SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <script src="../js/shopify.js"></script>
-
-    <script>
-      // Wait for both DOM and ShopifyAPI to be ready
-      async function initializePage() {
-        try {
-          // Initialize Shopify Buy functionality
-          await window.ShopifyAPI.initShopifyBuy();
-          
-          // Additional product-specific initialization can go here
-          
-        } catch (error) {
-          console.error("Error initializing page:", error);
-        }
-      }
-
-      // Initialize when DOM is ready
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
-      } else {
-        initializePage();
-      }
-    </script>
+    <script src="../js/product-router.js"></script>
     <script src="../js/include.js" defer></script>
   </body>
 </html>

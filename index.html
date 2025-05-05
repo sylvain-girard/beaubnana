@@ -135,20 +135,7 @@
               ></a>
               <p class="heading-style-h6">Shop New</p>
               <div class="hero-cta_marquee-wrap">
-                <div class="marquee-track">
-                  <div class="display-contents w-dyn-list">
-                    <div role="list" class="marquee_list w-dyn-items">
-                      <div role="listitem" class="marquee_item w-dyn-item">
-                        <img
-                          src=""
-                          loading="lazy"
-                          alt=""
-                          class="marquee_image scale-up"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div class="marquee-track"></div>
               </div>
             </div>
           </div>
@@ -337,51 +324,89 @@
       src="js/ignite-project-starter-d09bc5786c3ea361.js"
       type="text/javascript"
     ></script> -->
+    <script src="js/dev-env.js"></script>
+    <script src="js/config.js"></script>
+    <!-- Shopify Buy SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <script src="js/shopify.js"></script>
     <script src="js/include.js"></script>
     <script>
       // Wait for both DOM and ShopifyAPI to be ready
       async function initializePage() {
+        console.log("Inside initializePage function");
         try {
-          // Initialize Shopify Buy functionality
-          await window.ShopifyAPI.initShopifyBuy();
-
-          // Display new products in the hero marquee
-          await window.ShopifyAPI.displayMarqueeProducts(
-            ".hero-cta_marquee-wrap .marquee-track",
-            {
-              limit: 10,
-            }
+          // Add detailed logging right before the call
+          console.log(
+            "Checking window.ShopifyAPI right before calling displayCollectionMarquee:",
+            window.ShopifyAPI
+          );
+          console.log(
+            "Methods available:",
+            Object.keys(window.ShopifyAPI || {})
+          );
+          console.log(
+            "Is displayCollectionMarquee a function?",
+            typeof window.ShopifyAPI?.displayCollectionMarquee === "function"
           );
 
-          // Display top sellers in the grid from the 'top-sellers' collection
-          await window.ShopifyAPI.displayCollectionGrid(
-            ".top-sellers_card-wrapper",
-            "top-sellers", // Use the collection handle here
-            {
-              limit: 4,
-              tagText: "best seller",
-            }
-          );
-
-          // Display products from the 'Too Hot' collection in the marquee
+          // Call the function to display collection marquee, using the GID
           await window.ShopifyAPI.displayCollectionMarquee(
             ".collection_marquee-track",
-            "smiley-face"
+            "gid://shopify/Metaobject/138962501719" // Smiley Face GID
           );
+          console.log("Successfully called displayCollectionMarquee");
 
-          // Display product type collections
+          // Call the function to display the hero marquee products
+          console.log("Calling displayMarqueeProducts for hero section");
+          await window.ShopifyAPI.displayMarqueeProducts(
+            ".hero_cta_marquee-wrap .marquee-track",
+            { limit: 10 } // Optional: Limit the number of products
+          );
+          console.log("Successfully called displayMarqueeProducts for hero");
+
+          // Call the function to display the top sellers grid
+          console.log("Calling displayProductGrid for top sellers section");
+          await window.ShopifyAPI.displayProductGrid(
+            ".top-sellers_card-wrapper",
+            { limit: 4, tag: "top-seller", tagText: "best seller" }
+          );
+          console.log("Successfully called displayProductGrid for top sellers");
+
+          // Call the function to display product type collections
+          console.log(
+            "Calling displayProductTypeCollections for categories section"
+          );
           await window.ShopifyAPI.displayProductTypeCollections();
+          console.log("Successfully called displayProductTypeCollections");
         } catch (error) {
           console.error("Error initializing page:", error);
+          // Log the API object again in case of error
+          console.log(
+            "window.ShopifyAPI state during error:",
+            window.ShopifyAPI
+          );
         }
       }
 
       // Initialize when both DOM and ShopifyAPI are ready
       if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
+        document.addEventListener("DOMContentLoaded", () => {
+          console.log(
+            "DOMContentLoaded event fired, calling initializePage with delay"
+          );
+          // Add a small delay
+          setTimeout(() => {
+            initializePage();
+          }, 100); // 100ms delay
+        });
       } else {
-        initializePage();
+        console.log(
+          "Document already loaded, calling initializePage with delay"
+        );
+        // Add a small delay even if already loaded
+        setTimeout(() => {
+          initializePage();
+        }, 100); // 100ms delay
       }
     </script>
   </body>

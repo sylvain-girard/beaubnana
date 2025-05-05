@@ -140,37 +140,37 @@
                         
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/672708b0f881d1a5e6e62784__E4_BA_A7_E5_93_81800X800-_E7_99_BD_E5_BA_95_E5_9B_BE_E8_80_B3_E7_8E_AF.webp?v=1730809111" loading="lazy" alt="Sweet Heart Earrings - Image 1" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/672708b0f881d1a5e6e62784__E4_BA_A7_E5_93_81800X800-_E7_99_BD_E5_BA_95_E5_9B_BE_E8_80_B3_E7_8E_AF.webp?v=1745718776" loading="lazy" alt="Sweet Heart Earrings - Image 1" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727097b3fb6aa509a9c9217_1.jpg?v=1730981216" loading="lazy" alt="Sweet Heart Earrings - Image 2" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727097b3fb6aa509a9c9217_1.jpg?v=1745718776" loading="lazy" alt="Sweet Heart Earrings - Image 2" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727097b51b60d8f624e0bab_4.jpg?v=1730981216" loading="lazy" alt="Sweet Heart Earrings - Image 3" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727097b51b60d8f624e0bab_4.jpg?v=1745718776" loading="lazy" alt="Sweet Heart Earrings - Image 3" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727097bdc6305cc1dff0301_6.jpg?v=1730981216" loading="lazy" alt="Sweet Heart Earrings - Image 4" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727097bdc6305cc1dff0301_6.jpg?v=1745718776" loading="lazy" alt="Sweet Heart Earrings - Image 4" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727097b83e251cacd823f84_7.jpg?v=1730981216" loading="lazy" alt="Sweet Heart Earrings - Image 5" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727097b83e251cacd823f84_7.jpg?v=1745718776" loading="lazy" alt="Sweet Heart Earrings - Image 5" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727097a5452fe7827556bc2_8.jpg?v=1730981216" loading="lazy" alt="Sweet Heart Earrings - Image 6" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727097a5452fe7827556bc2_8.jpg?v=1745718776" loading="lazy" alt="Sweet Heart Earrings - Image 6" class="product-header_image">
                         </div>
                     </div>
                 
@@ -212,13 +212,14 @@
                       <div class="spacer-1d5"></div>
                       <p>Retro colours blend matte red beads, blue cotton yarn, and silver glass yarn with polka dot art, offering a unique styling experience. This ultra-sweet accessory is a playful addition for the classic American girl. The timeless heart shape is filled with silver glass yarn, bordered with blue cotton yarn and red beads.</p>
                       <div class="spacer-3"></div>
-                      <div class="button w-embed">
+                      <div class="button">
                         <div
-                          data-shopify-id="7753852682297"
+                          data-shopify-id="7405671252055"
                           id="product-component"
                           class="shopify-button-wrapper"
                         ></div>
                         <span class="button_text" style="pointer-events: none;">Add to Cart</span>
+                        <span class="button_dot"></span>
                       </div>
                       <div class="spacer-3"></div>
                       <div class="text-rich-text w-richtext">
@@ -258,29 +259,12 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
+    <script src="../js/dev-env.js"></script>
+    <script src="../js/config.js"></script>
+    <!-- Shopify Buy SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <script src="../js/shopify.js"></script>
-
-    <script>
-      // Wait for both DOM and ShopifyAPI to be ready
-      async function initializePage() {
-        try {
-          // Initialize Shopify Buy functionality
-          await window.ShopifyAPI.initShopifyBuy();
-          
-          // Additional product-specific initialization can go here
-          
-        } catch (error) {
-          console.error("Error initializing page:", error);
-        }
-      }
-
-      // Initialize when DOM is ready
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
-      } else {
-        initializePage();
-      }
-    </script>
+    <script src="../js/product-router.js"></script>
     <script src="../js/include.js" defer></script>
   </body>
 </html>

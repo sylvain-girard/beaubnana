@@ -32,8 +32,14 @@ cd beaubnana
 # Install dependencies (if using npm)
 npm install
 
-# Run build scripts
-node build-product-pages.js
+# Copy the environment variables template
+cp .env.example .env
+
+# Edit .env with your Shopify credentials
+# Update the values in the .env file
+
+# Run the local development server
+npm run dev
 ```
 
 ## Deployment
@@ -50,14 +56,21 @@ See `.github/workflows/deploy.yml` for the deployment configuration.
 
 This project uses environment variables for secure API tokens. To set up:
 
-1. Create a `.env` file in the project root (this file is ignored by git)
-2. Add the following environment variables:
+1. Copy `.env.example` to `.env` for local development (this file is ignored by git)
+2. Add your Shopify credentials to the `.env` file:
    ```
-   SHOPIFY_DOMAIN=0wrz46-0q.myshopify.com
+   SHOPIFY_STORE_NAME=your-store.myshopify.com
    SHOPIFY_STOREFRONT_TOKEN=your_storefront_token
    SHOPIFY_ADMIN_TOKEN=your_admin_token
    ```
-3. For GitHub deployment, add these as repository secrets
+3. For GitHub deployment, add these as repository secrets and variables:
+   - Add `SHOPIFY_STORE_NAME` as a repository variable
+   - Add `SHOPIFY_STOREFRONT_TOKEN` and `SHOPIFY_ADMIN_TOKEN` as repository secrets
+
+The configuration system automatically:
+- Uses GitHub secrets and variables in production
+- Uses your local .env file for development
+- Generates the appropriate config.js file during build
 
 ## Shopify Integration
 
