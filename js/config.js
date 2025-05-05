@@ -1,13 +1,15 @@
+console.log('📝 Loading config.js...');
+
 // Shopify configuration (DO NOT EDIT DIRECTLY - values are populated during build)
-const SHOPIFY_CONFIG = {
-    domain: '0wrz46-0q.myshopify.com',
-    storefrontAccessToken: '274905cf05e4e73a7e1993be2fffc9d1'
+window.SHOPIFY_CONFIG = {
+    domain: '0mif5c-fw.myshopify.com',
+    storefrontAccessToken: 'ec8f31c45cba8198d673e15d440d75d7' // Use the general Storefront API token
 };
 
 // Shopify Buy Button Configuration
-const SHOPIFY_BUY_CONFIG = {
-    domain: '0wrz46-0q.myshopify.com',
-    storefrontAccessToken: '514828cb596d687316a4de3ab8b6aafd',
+window.SHOPIFY_BUY_CONFIG = {
+    domain: '0mif5c-fw.myshopify.com',
+    storefrontAccessToken: '26f55eabc777cb2e8b91c1233a679536', // Use the specific Buy Button SDK token
     moneyFormat: '%24%7B%7Bamount%7D%7D',
     buttonStyles: {
         ":hover": {
@@ -19,4 +21,7 @@ const SHOPIFY_BUY_CONFIG = {
         },
         "border-radius": "8px 0 0 8px",
     }
-}; 
+};
+
+console.log('✅ Config.js loaded successfully with window.SHOPIFY_CONFIG:', window.SHOPIFY_CONFIG);
+console.log('✅ Config.js loaded successfully with window.SHOPIFY_BUY_CONFIG:', window.SHOPIFY_BUY_CONFIG); // Log the Buy config too

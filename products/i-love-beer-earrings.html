@@ -140,31 +140,31 @@
                         
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727106fb98345c0c4ba8fd5_EH202368_201.webp?v=1730809133" loading="lazy" alt="I Love Beer Earrings - Image 1" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727106fb98345c0c4ba8fd5_EH202368_201.webp?v=1745718691" loading="lazy" alt="I Love Beer Earrings - Image 1" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727110f7e444cea8c363bf7_1.jpg?v=1730981052" loading="lazy" alt="I Love Beer Earrings - Image 2" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727110f7e444cea8c363bf7_1.jpg?v=1745718691" loading="lazy" alt="I Love Beer Earrings - Image 2" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727110f0696de61ad5e0864_2.jpg?v=1730981052" loading="lazy" alt="I Love Beer Earrings - Image 3" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727110f0696de61ad5e0864_2.jpg?v=1745718691" loading="lazy" alt="I Love Beer Earrings - Image 3" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727110f51b60d8f625097e1_3.jpg?v=1730981052" loading="lazy" alt="I Love Beer Earrings - Image 4" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727110f51b60d8f625097e1_3.jpg?v=1745718692" loading="lazy" alt="I Love Beer Earrings - Image 4" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/6727110f7a3579a35aa88d76_5.jpg?v=1730981052" loading="lazy" alt="I Love Beer Earrings - Image 5" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/6727110f7a3579a35aa88d76_5.jpg?v=1745718692" loading="lazy" alt="I Love Beer Earrings - Image 5" class="product-header_image">
                         </div>
                     </div>
                 
@@ -206,13 +206,14 @@
                       <div class="spacer-1d5"></div>
                       <p>Turning joyful drinking memories into imagery. Day and night become vibrant and colourful with a drink in hand. Passing on happiness through yarn for you to enjoy! Lightweight crochet beer with a stainless steel rotating link, perfect for all seasons.</p>
                       <div class="spacer-3"></div>
-                      <div class="button w-embed">
+                      <div class="button">
                         <div
-                          data-shopify-id="7753853206585"
+                          data-shopify-id="7405670924375"
                           id="product-component"
                           class="shopify-button-wrapper"
                         ></div>
                         <span class="button_text" style="pointer-events: none;">Add to Cart</span>
+                        <span class="button_dot"></span>
                       </div>
                       <div class="spacer-3"></div>
                       <div class="text-rich-text w-richtext">
@@ -252,29 +253,12 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
+    <script src="../js/dev-env.js"></script>
+    <script src="../js/config.js"></script>
+    <!-- Shopify Buy SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <script src="../js/shopify.js"></script>
-
-    <script>
-      // Wait for both DOM and ShopifyAPI to be ready
-      async function initializePage() {
-        try {
-          // Initialize Shopify Buy functionality
-          await window.ShopifyAPI.initShopifyBuy();
-          
-          // Additional product-specific initialization can go here
-          
-        } catch (error) {
-          console.error("Error initializing page:", error);
-        }
-      }
-
-      // Initialize when DOM is ready
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
-      } else {
-        initializePage();
-      }
-    </script>
+    <script src="../js/product-router.js"></script>
     <script src="../js/include.js" defer></script>
   </body>
 </html>

@@ -6,10 +6,14 @@ require('dotenv').config();
 
 // Shopify API configuration
 const SHOPIFY_CONFIG = {
-    domain: process.env.SHOPIFY_DOMAIN || '0wrz46-0q.myshopify.com',
-    storefrontAccessToken: process.env.SHOPIFY_STOREFRONT_TOKEN,
-    adminApiAccessToken: process.env.SHOPIFY_ADMIN_TOKEN
+    domain: process.env.SHOPIFY_STORE_NAME || '',
+    storefrontAccessToken: process.env.SHOPIFY_STOREFRONT_TOKEN || '',
+    adminApiAccessToken: process.env.SHOPIFY_ADMIN_TOKEN || ''
 };
+
+console.log(`Using Shopify domain: ${SHOPIFY_CONFIG.domain}`);
+console.log(`Storefront token available: ${SHOPIFY_CONFIG.storefrontAccessToken ? 'Yes' : 'No'}`);
+console.log(`Admin token available: ${SHOPIFY_CONFIG.adminApiAccessToken ? 'Yes' : 'No'}`);
 
 // Function to make a request to the Shopify Admin API
 function fetchFromShopifyAdmin(endpoint) {

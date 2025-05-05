@@ -4094,6 +4094,7 @@ figcaption {
   top: 0;
   right: 0;
   transform: none;
+  pointer-events: none;
 }
 
 .button_dot.is-secondary {

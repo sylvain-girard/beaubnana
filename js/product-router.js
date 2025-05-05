@@ -2,8 +2,9 @@
 class ProductRouter {
     constructor() {
         console.log("Product Router initialized");
-        this.shopifyDomain = 'beau-banana.myshopify.com';
-        this.shopifyToken = '594822dab94e9f663f9df864058e7573';
+        // Use values from the config file instead of hardcoding them
+        this.shopifyDomain = SHOPIFY_CONFIG.domain;
+        this.shopifyToken = SHOPIFY_CONFIG.storefrontAccessToken;
         
         // Check if we're on GitHub Pages and adjust paths accordingly
         const isGitHubPages = window.location.hostname === "sylvgira.com" || 
@@ -160,122 +161,127 @@ class ProductRouter {
         // Set page title
         document.title = `${product.title} | Beau Banana`;
         
-        // Update product information in the DOM
-        const titleElement = document.querySelector('.product-title');
-        const priceElement = document.querySelector('.product-price');
-        const descriptionElement = document.querySelector('.product-description');
-        const mainImageElement = document.querySelector('.product-main-image');
-        const thumbnailsContainer = document.querySelector('.product-thumbnails');
-        
+        // Update product information in the DOM - Select elements using the classes from template.html
+        const titleElement = document.querySelector('.product-header_sticky h1.heading-style-h3');
+        const priceElement = document.querySelector('.product-header_sticky .heading-style-h5');
+        const descriptionElement = document.querySelector('.product-header_sticky p'); // Adjust selector if needed
+        const galleryList = document.querySelector('.product-header_list'); // Target the gallery list
+        const breadcrumbLink = document.querySelector('.breadcrumb_component .breadcrumb-link'); // To update link/text later if needed
+        const productComponent = document.getElementById('product-component'); // Get the buy button wrapper
+
         if (titleElement) {
             console.log("Updating title element", titleElement);
             titleElement.textContent = product.title;
         } else {
-            console.warn("Title element not found");
+            console.warn("Title element (h1.heading-style-h3) not found");
         }
         
         if (priceElement) {
             console.log("Updating price element", priceElement);
-            const variant = product.variants[0];
-            const price = variant.price;
-            priceElement.textContent = `$${price}`;
+            const variant = product.variants[0]; // Assuming the first variant determines the displayed price
+            const price = variant.price.amount;
+            const currencyCode = variant.price.currencyCode; // Get currency code
+            // Format price based on currency (simple example)
+            priceElement.textContent = `${currencyCode} ${price}`; 
         } else {
-            console.warn("Price element not found");
+            console.warn("Price element (.heading-style-h5) not found");
         }
         
+        // Update description (assuming the first <p> after price is description)
         if (descriptionElement) {
             console.log("Updating description element", descriptionElement);
+            // Use descriptionHtml if available for rich text, otherwise plain description
             descriptionElement.innerHTML = product.descriptionHtml || product.description;
         } else {
-            console.warn("Description element not found");
+            console.warn("Description element (p) not found");
         }
         
-        // Update main image
-        if (mainImageElement && product.images.length > 0) {
-            console.log("Updating main image element", mainImageElement);
-            mainImageElement.src = product.images[0].src;
-            mainImageElement.alt = product.title;
-        } else {
-            console.warn("Main image element not found or product has no images");
-        }
-        
-        // Update thumbnails
-        if (thumbnailsContainer && product.images.length > 0) {
-            console.log("Updating thumbnails container", thumbnailsContainer);
-            thumbnailsContainer.innerHTML = '';
+        // Update image gallery
+        if (galleryList && product.images.length > 0) {
+            console.log("Updating gallery list", galleryList);
+            galleryList.innerHTML = ''; // Clear existing images
             
             product.images.forEach((image, index) => {
-                const thumbnail = document.createElement('img');
-                thumbnail.classList.add('product-thumbnail');
-                if (index === 0) thumbnail.classList.add('active');
-                thumbnail.src = image.src;
-                thumbnail.alt = `${product.title} - Image ${index + 1}`;
-                thumbnail.dataset.index = index;
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'product-header_item w-dyn-item';
+                galleryItem.setAttribute('role', 'listitem');
                 
-                thumbnail.addEventListener('click', () => {
-                    // Update main image when thumbnail is clicked
-                    mainImageElement.src = image.src;
-                    // Update active class
-                    document.querySelectorAll('.product-thumbnail').forEach(thumb => {
-                        thumb.classList.remove('active');
-                    });
-                    thumbnail.classList.add('active');
-                });
+                const img = document.createElement('img');
+                img.src = image.src;
+                img.loading = 'lazy';
+                // Use image altText if available, otherwise default to product title + index
+                img.alt = image.altText || `${product.title} - Image ${index + 1}`; 
+                img.className = 'product-header_image';
                 
-                thumbnailsContainer.appendChild(thumbnail);
+                galleryItem.appendChild(img);
+                galleryList.appendChild(galleryItem);
             });
         } else {
-            console.warn("Thumbnails container not found or product has no images");
+             console.warn("Gallery list (.product-header_list) not found or product has no images");
         }
 
-        // Initialize Shopify Buy Button
-        this.initializeBuyButton(product);
-    }
+        // --- Initialize Shopify Buy Button ---
+        // Ensure the target element exists
+        if (productComponent) {
+            console.log("Found product component for Buy Button:", productComponent);
+            
+            // Get the GraphQL GID
+            const graphQLId = product.id; // e.g., gid://shopify/Product/1234567890
+            console.log(`Using GraphQL ID: ${graphQLId}`);
 
-    initializeBuyButton(product) {
-        console.log("Initializing buy button for product:", product.id);
-        
-        // Target div element
-        const buyButtonContainer = document.getElementById('product-buy-button');
-        
-        if (!buyButtonContainer) {
-            console.error("Buy button container not found");
-            return;
-        }
-        
-        // Clear any existing content
-        buyButtonContainer.innerHTML = '';
-        
-        // Create UI instance
-        const ui = ShopifyBuy.UI.init(this.client);
-        
-        // Render the buy button
-        ui.createComponent('product', {
-            id: product.id,
-            node: buyButtonContainer,
-            moneyFormat: '%24%7B%7Bamount%7D%7D',
-            options: {
-                product: {
-                    buttonDestination: 'checkout',
-                    contents: {
-                        img: false,
-                        title: false,
-                        price: false,
-                        options: true,
-                        quantity: true,
-                        button: true
-                    },
-                    text: {
-                        button: 'Add to Cart'
-                    }
-                },
-                cart: {
-                    startOpen: false
-                }
+            // Extract the numeric ID from the GraphQL GID
+            const numericProductId = graphQLId.split('/').pop();
+            console.log(`Extracted Numeric Product ID: ${numericProductId}`);
+            
+            // Set the necessary attribute with the GraphQL ID (some scripts might still expect this?)
+            // Although the component likely needs the numeric ID, setting this might be harmless.
+            productComponent.setAttribute('data-shopify-id', graphQLId); 
+
+            // Now call the global init function from shopify.js, passing the NUMERIC ID
+            if (window.ShopifyAPI && typeof window.ShopifyAPI.initProductBuyButton === 'function') {
+                 console.log(`Calling ShopifyAPI.initProductBuyButton with NUMERIC ID: ${numericProductId}`);
+                // Pass the extracted NUMERIC ID
+                window.ShopifyAPI.initProductBuyButton(numericProductId); 
+            } else {
+                console.error("ShopifyAPI.initProductBuyButton is not available!");
             }
-        });
+        } else {
+            console.error("Product component element (#product-component) not found! Cannot initialize Buy Button.");
+        }
     }
 }
 
-// Initialize the router
-window.productRouter = new ProductRouter(); 
+// Initialize the router when the script loads
+// Ensure ShopifyBuy is loaded before initializing
+if (window.ShopifyBuy) {
+    window.productRouter = new ProductRouter();
+    window.productRouter.initialize();
+} else {
+    // Wait for the Shopify Buy SDK to load if it hasn't already
+    // This might happen if scripts load out of order
+    document.addEventListener('shopify-buy-sdk-ready', () => {
+         console.log("Shopify Buy SDK ready event caught in product-router.");
+         window.productRouter = new ProductRouter();
+         window.productRouter.initialize();
+    });
+    
+    // Add a fallback check in case the event doesn't fire or SDK loads very quickly
+    let checkInterval = setInterval(() => {
+        if (window.ShopifyBuy) {
+            clearInterval(checkInterval);
+            if (!window.productRouter) { // Avoid double initialization
+                 console.log("Shopify Buy SDK detected via interval in product-router.");
+                 window.productRouter = new ProductRouter();
+                 window.productRouter.initialize();
+            }
+        }
+    }, 100);
+    
+    // Timeout fallback
+    setTimeout(() => {
+         clearInterval(checkInterval);
+         if (!window.productRouter) {
+             console.error("Shopify Buy SDK did not load within timeout in product-router.");
+         }
+    }, 5000); // 5-second timeout
+} 

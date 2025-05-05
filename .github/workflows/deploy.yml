@@ -30,7 +30,7 @@ jobs:
       - name: Build Site
         run: npm run build
         env:
-          SHOPIFY_DOMAIN: 0wrz46-0q.myshopify.com
+          SHOPIFY_STORE_NAME: ${{ vars.SHOPIFY_STORE_NAME }}
           SHOPIFY_STOREFRONT_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_TOKEN }}
           SHOPIFY_ADMIN_TOKEN: ${{ secrets.SHOPIFY_ADMIN_TOKEN }}
 

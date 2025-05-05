@@ -140,37 +140,37 @@
                         
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/800X800-_1.png?v=1731053208" loading="lazy" alt="I Love Beer Bag - Image 1" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/800X800-_1.png?v=1745718553" loading="lazy" alt="I Love Beer Bag - Image 1" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/13143.jpg?v=1731024523" loading="lazy" alt="I Love Beer Bag - Image 2" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/13143.jpg?v=1745718553" loading="lazy" alt="I Love Beer Bag - Image 2" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/13130.jpg?v=1731024520" loading="lazy" alt="I Love Beer Bag - Image 3" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/13130.jpg?v=1745718553" loading="lazy" alt="I Love Beer Bag - Image 3" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/13162.jpg?v=1731024517" loading="lazy" alt="I Love Beer Bag - Image 4" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/13162.jpg?v=1745718553" loading="lazy" alt="I Love Beer Bag - Image 4" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/13179.jpg?v=1731053355" loading="lazy" alt="I Love Beer Bag - Image 5" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/13179.jpg?v=1745718553" loading="lazy" alt="I Love Beer Bag - Image 5" class="product-header_image">
                         </div>
                     </div>
                 
                     <div role="listitem" class="product-header_item w-dyn-item">
                         <div class="product-header_image-wrapper">
-                            <img src="https://cdn.shopify.com/s/files/1/0693/4806/5337/files/13168.jpg?v=1730889008" loading="lazy" alt="I Love Beer Bag - Image 6" class="product-header_image">
+                            <img src="https://cdn.shopify.com/s/files/1/0628/9470/2679/files/13168.jpg?v=1745718553" loading="lazy" alt="I Love Beer Bag - Image 6" class="product-header_image">
                         </div>
                     </div>
                 
@@ -212,13 +212,14 @@
                       <div class="spacer-1d5"></div>
                       <p>The joy of summer is all about ice-cold beer! With vibrant contrasting colors, a frosty beer design, a calm smile, and playful pop dancing butterflies, this bag captures the lively spirit of summer. Just remember, enjoy in moderation! The bag features a mix of vivid memories of good times, with unique patterns on each side, bold colors combinations, and a stretchy, open-knit strap that’s both soft and durable. Perfect for adding a cheerful touch to your summer!</p>
                       <div class="spacer-3"></div>
-                      <div class="button w-embed">
+                      <div class="button">
                         <div
-                          data-shopify-id="7754557423673"
+                          data-shopify-id="7405670367319"
                           id="product-component"
                           class="shopify-button-wrapper"
                         ></div>
                         <span class="button_text" style="pointer-events: none;">Add to Cart</span>
+                        <span class="button_dot"></span>
                       </div>
                       <div class="spacer-3"></div>
                       <div class="text-rich-text w-richtext">
@@ -258,29 +259,12 @@
       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
       crossorigin="anonymous"
     ></script>
+    <script src="../js/dev-env.js"></script>
+    <script src="../js/config.js"></script>
+    <!-- Shopify Buy SDK -->
+    <script src="https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js"></script>
     <script src="../js/shopify.js"></script>
-
-    <script>
-      // Wait for both DOM and ShopifyAPI to be ready
-      async function initializePage() {
-        try {
-          // Initialize Shopify Buy functionality
-          await window.ShopifyAPI.initShopifyBuy();
-          
-          // Additional product-specific initialization can go here
-          
-        } catch (error) {
-          console.error("Error initializing page:", error);
-        }
-      }
-
-      // Initialize when DOM is ready
-      if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initializePage);
-      } else {
-        initializePage();
-      }
-    </script>
+    <script src="../js/product-router.js"></script>
     <script src="../js/include.js" defer></script>
   </body>
 </html>
