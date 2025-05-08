@@ -52,7 +52,7 @@ jobs:
           rm -rf ./deploy-temp/scripts/
           rm -rf ./deploy-temp/tools/
           rm -rf ./deploy-temp/_drafts/
-          rm -rf ./deploy-temp/_includes/
+          rm -rf ./deploy-temp/includes/
           
           # Remove template and development files by pattern
           find ./deploy-temp -name "template.*" -type f -delete

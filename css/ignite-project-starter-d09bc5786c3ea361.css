@@ -4143,15 +4143,19 @@ figcaption {
 .footer_bottom {
   padding-top: var(--spacing--0-75);
   padding-bottom: var(--spacing--0-75);
-  grid-column-gap: var(--spacing--1);
+  grid-column-gap: var(--spacing--2);
   grid-row-gap: var(--spacing--1);
   flex-flow: wrap;
-  justify-content: space-between;
+  justify-content: center;
   display: flex;
 }
 
 .footer_main {
   position: relative;
+  padding-left: calc(5vw - 1rem);
+  padding-right: calc(5vw - 1rem);
+  padding-top: min(calc(5vw - 1rem), var(--spacing--5));
+  padding-bottom: min(calc(5vw - 1rem), var(--spacing--5));
 }
 
 .pseudo-product {

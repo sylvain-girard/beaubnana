@@ -191,7 +191,7 @@ function getSamplePolicies() {
 
 // Read template file
 function readTemplate() {
-    return fs.readFileSync(path.join(__dirname, 'policies/template.html'), 'utf8');
+    return fs.readFileSync(path.join(__dirname, '../policies/template.html'), 'utf8');
 }
 
 // Generate HTML for a policy
@@ -233,7 +233,7 @@ function generatePolicyHTML(template, policy) {
 
 // Create the directory structure
 function createDirectories() {
-    const policiesDir = path.join(__dirname, 'policies');
+    const policiesDir = path.join(__dirname, '../policies');
     
     // Make sure base directory exists
     if (!fs.existsSync(policiesDir)) {
@@ -243,7 +243,7 @@ function createDirectories() {
 
 // Write the policy HTML files
 function writePolicyFile(handle, html) {
-    const filePath = path.join(__dirname, 'policies', `${handle}.html`);
+    const filePath = path.join(__dirname, '../policies', `${handle}.html`);
     fs.writeFileSync(filePath, html);
     console.log(`Created: policies/${handle}.html`);
 }

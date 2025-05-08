@@ -110,7 +110,7 @@ async function fetchProducts() {
 
 // Read template file
 function readTemplate() {
-    return fs.readFileSync(path.join(__dirname, 'products/template.html'), 'utf8');
+    return fs.readFileSync(path.join(__dirname, '../products/template.html'), 'utf8');
 }
 
 // Generate HTML for a product
@@ -177,7 +177,7 @@ function generateProductHTML(template, product) {
 
 // Create the directory structure
 function createDirectories() {
-    const productsDir = path.join(__dirname, 'products');
+    const productsDir = path.join(__dirname, '../products');
     
     // Make sure base directory exists
     if (!fs.existsSync(productsDir)) {
@@ -187,7 +187,7 @@ function createDirectories() {
 
 // Write the product HTML files
 function writeProductFile(handle, html) {
-    const filePath = path.join(__dirname, 'products', `${handle}.html`);
+    const filePath = path.join(__dirname, '../products', `${handle}.html`);
     fs.writeFileSync(filePath, html);
     console.log(`Created: products/${handle}.html`);
 }
