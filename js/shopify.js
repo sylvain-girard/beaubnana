@@ -374,10 +374,6 @@ async function displayProductGrid(selector, options = {}) {
                     <div data-inner-rad="top-left" class="product-card_tag">
                         <p class="text-weight-bold">${options.tagText || 'best seller'}</p>
                     </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="product-name">${product.title}</h6>
-                        <p class="product-price text-size-large">${currency} ${price}</p>
-                    </div>
                     <div data-product-focus="" class="product-card_image-wrapper">
                         <img src="${secondaryImage}" 
                              alt="${product.title}" 
@@ -388,6 +384,11 @@ async function displayProductGrid(selector, options = {}) {
                              loading="lazy" 
                              class="product-card_image product-focus">
                     </div>
+                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
+                        <h6 class="product-name">${product.title}</h6>
+                        <p class="product-price text-size-large">${currency} ${price}</p>
+                    </div>
+                    
                 </a>
             </div>
         `;
@@ -1014,11 +1015,6 @@ function initializeSorting() {
                             <div data-inner-rad="top-left" class="product-card_tag">
                                 <p class="text-weight-bold"></p>
                             </div>
-                            <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                                <h6 class="display-inline">${product.title}</h6>
-                                <div class="spacer-0d25"></div>
-                                <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
-                            </div>
                             <div class="product-card_image-wrapper">
                                 <img src="${secondaryImage}" 
                                      alt="${product.title}" 
@@ -1029,6 +1025,12 @@ function initializeSorting() {
                                      loading="lazy" 
                                      class="product-card_image product-focus">
                             </div>
+                            <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
+                                <h6 class="display-inline">${product.title}</h6>
+                                <div class="spacer-0d25"></div>
+                                <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
+                            </div>
+
                         </a>
                     </div>
                 `;
@@ -2172,13 +2174,8 @@ function displayFilteredProducts(products) {
                 <a href="/products/${product.handle}" 
                    data-product-handle="${product.handle}"
                    class="product-card_link w-inline-block">
-                    <div data-inner-rad="top-left" class="product-card_tag">
+                    <div data-inner-rad="top-left" class="product-card_tag">npm run build
                         <p class="text-weight-bold"></p>
-                    </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="display-inline">${product.title}</h6>
-                        <div class="spacer-0d25"></div>
-                        <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
                     </div>
                     <div class="product-card_image-wrapper">
                         <img src="${secondaryImage}" 
@@ -2189,6 +2186,11 @@ function displayFilteredProducts(products) {
                              alt="${product.title}" 
                              loading="lazy" 
                              class="product-card_image product-focus">
+                    </div>
+                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
+                        <h6 class="display-inline">${product.title}</h6>
+                        <div class="spacer-0d25"></div>
+                        <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
                     </div>
                 </a>
             </div>
@@ -2263,11 +2265,6 @@ async function displayAllProducts() {
                     <div data-inner-rad="top-left" class="product-card_tag">
                         <p class="text-weight-bold"></p>
                     </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="display-inline">${product.title}</h6>
-                        <div class="spacer-0d25"></div>
-                        <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
-                    </div>
                     <div class="product-card_image-wrapper">
                         <img src="${secondaryImage}" 
                              alt="${product.title}" 
@@ -2277,6 +2274,11 @@ async function displayAllProducts() {
                              alt="${product.title}" 
                              loading="lazy" 
                              class="product-card_image product-focus">
+                    </div>
+                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
+                        <h6 class="display-inline">${product.title}</h6>
+                        <div class="spacer-0d25"></div>
+                        <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
                     </div>
                 </a>
             </div>
@@ -2716,11 +2718,7 @@ async function displayCollectionGrid(selector, collectionHandle, options = {}) {
                     <div data-inner-rad="top-left" class="product-card_tag">
                         <p class="text-weight-bold">${options.tagText || ''}</p>
                     </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="product-name">${product.title}</h6>
-                        <p class="product-price text-size-large">${currency} ${price}</p>
-                    </div>
-                    <div data-product-focus="" class="product-card_image-wrapper">
+                        <div data-product-focus="" class="product-card_image-wrapper">
                         <img src="${secondaryImage}" 
                              alt="${product.title}" 
                              loading="lazy" 
@@ -2730,6 +2728,11 @@ async function displayCollectionGrid(selector, collectionHandle, options = {}) {
                              loading="lazy" 
                              class="product-card_image product-focus">
                     </div>
+                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
+                        <h6 class="product-name">${product.title}</h6>
+                        <p class="product-price text-size-large">${currency} ${price}</p>
+                    </div>
+
                 </a>
             </div>
         `;
