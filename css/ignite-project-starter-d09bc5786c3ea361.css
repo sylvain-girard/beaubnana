@@ -3874,15 +3874,15 @@ figcaption {
 .intro-text_text {
   font-family: var(--heading--h1-font);
   line-height: var(--heading--h2-line-height);
-  -webkit-text-fill-color: transparent;
   text-wrap: pretty;
-  -webkit-text-fill-color: currentColor;
-  color: color-mix(in srgb, currentColor 25%, transparent);
   font-weight: 600;
-  font-size: clamp(var(--heading--h4-size), 3vw, var(--heading--h2-size));
-  -webkit-background-clip: text;
+  font-size: clamp(var(--heading--h4-size), 4vw, var(--heading--h2-size));
+  /* -webkit-background-clip: text;
   background-clip: text;
+  -webkit-text-fill-color: transparent;
   display: inline;
+  -webkit-text-fill-color: currentColor;
+  color: color-mix(in srgb, currentColor 25%, transparent); */
 }
 
 .default-state {

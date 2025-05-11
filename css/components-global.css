@@ -7,7 +7,7 @@
   * Intro Text Animation  var(--color--elements--text-alternate)
   */
 
-  .intro-text_text {
+  /* .intro-text_text {
     background-size: 0% 100%;
     background-repeat: no-repeat;
     background-image: linear-gradient(90deg, var(--color--elements--text-secondary) 90%, transparent);
@@ -18,7 +18,7 @@
   @keyframes intro-text-color-fill {
     from { background-size: 0% 100%; }
     to { background-size: 110% 100%; }
-  }
+  } */
   
  .filter_form-text-radio-icon:not(:checked) + .filter_form-text-radio-label {
   	opacity: 0.5;
