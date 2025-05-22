@@ -628,49 +628,21 @@
           console.error("Shopify configuration not loaded correctly");
         }
 
-        // Initialize Shopify features first
-        console.log(
-          "DOM loaded, checking for ShopifyAPI:",
-          !!window.ShopifyAPI
-        );
-
-        // Debug what methods are available
-        if (window.ShopifyAPI) {
-          console.log(
-            "Available ShopifyAPI methods:",
-            Object.keys(window.ShopifyAPI)
-          );
-          console.log(
-            "initShopifyBuy exists:",
-            typeof window.ShopifyAPI.initShopifyBuy === "function"
-          );
-          console.log(
-            "displayAllProducts exists:",
-            typeof window.ShopifyAPI.displayAllProducts === "function"
-          );
-        }
-
+        // Initialize Shopify features
         if (window.ShopifyAPI && window.ShopifyAPI.initShopifyBuy) {
-          console.log("About to call initShopifyBuy");
           window.ShopifyAPI.initShopifyBuy()
             .then(() => {
-              console.log("Shopify Buy SDK initialized");
-
               // Then load products with a small delay
               setTimeout(function () {
                 // Load the products
                 if (window.ShopifyAPI && window.ShopifyAPI.displayAllProducts) {
-                  console.log("Calling displayAllProducts");
                   window.ShopifyAPI.displayAllProducts();
-                } else {
-                  console.error("ShopifyAPI.displayAllProducts not available");
                 }
 
                 // Initialize the product router if available
                 if (window.productRouter) {
                   window.productRouter.initialize();
                 } else {
-                  console.log("Creating new ProductRouter instance");
                   window.productRouter = new ProductRouter();
                   window.productRouter.initialize();
                 }
@@ -681,14 +653,9 @@
             });
         } else {
           console.error("ShopifyAPI or initShopifyBuy not available");
-          // Dump what we have to debug
-          console.log("window.ShopifyAPI:", window.ShopifyAPI);
-          console.log("SHOPIFY_CONFIG:", window.SHOPIFY_CONFIG);
 
           // Try direct initialization as fallback
-          console.log("Attempting direct initialization of products");
           if (window.ShopifyAPI && window.ShopifyAPI.displayAllProducts) {
-            console.log("Found displayAllProducts, calling directly");
             window.ShopifyAPI.displayAllProducts();
           }
         }

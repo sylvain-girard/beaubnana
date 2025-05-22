@@ -519,76 +519,41 @@
     <script>
       // Wait for both DOM and ShopifyAPI to be ready
       async function initializePage() {
-        console.log("Inside initializePage function");
         try {
-          // Add detailed logging right before the call
-          console.log(
-            "Checking window.ShopifyAPI right before calling displayCollectionMarquee:",
-            window.ShopifyAPI
-          );
-          console.log(
-            "Methods available:",
-            Object.keys(window.ShopifyAPI || {})
-          );
-          console.log(
-            "Is displayCollectionMarquee a function?",
-            typeof window.ShopifyAPI?.displayCollectionMarquee === "function"
-          );
-
           // Call the function to display collection marquee, using the GID
           await window.ShopifyAPI.displayCollectionMarquee(
             ".collection_marquee-track",
             "gid://shopify/Metaobject/138962501719" // Smiley Face GID
           );
-          console.log("Successfully called displayCollectionMarquee");
 
           // Call the function to display the hero marquee products
-          console.log("Calling displayMarqueeProducts for hero section");
           await window.ShopifyAPI.displayMarqueeProducts(
             ".hero_cta_marquee-wrap .marquee-track",
             { limit: 10 } // Optional: Limit the number of products
           );
-          console.log("Successfully called displayMarqueeProducts for hero");
 
           // Call the function to display the top sellers grid
-          console.log("Calling displayProductGrid for top sellers section");
           await window.ShopifyAPI.displayProductGrid(
             ".top-sellers_card-wrapper",
             { limit: 4, tag: "top-seller", tagText: "best seller" }
           );
-          console.log("Successfully called displayProductGrid for top sellers");
 
           // Call the function to display product type collections
-          console.log(
-            "Calling displayProductTypeCollections for categories section"
-          );
           await window.ShopifyAPI.displayProductTypeCollections();
-          console.log("Successfully called displayProductTypeCollections");
         } catch (error) {
           console.error("Error initializing page:", error);
-          // Log the API object again in case of error
-          console.log(
-            "window.ShopifyAPI state during error:",
-            window.ShopifyAPI
-          );
         }
       }
 
       // Initialize when both DOM and ShopifyAPI are ready
       if (document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", () => {
-          console.log(
-            "DOMContentLoaded event fired, calling initializePage with delay"
-          );
           // Add a small delay
           setTimeout(() => {
             initializePage();
           }, 100); // 100ms delay
         });
       } else {
-        console.log(
-          "Document already loaded, calling initializePage with delay"
-        );
         // Add a small delay even if already loaded
         setTimeout(() => {
           initializePage();
