@@ -1,6 +1,6 @@
 'use strict'; // Add strict mode
 
-console.log('🔍 shopify.js starting to execute');
+
 
 // This file uses configurations from config.js
 // Make sure to import config.js before this file in your HTML
@@ -9,8 +9,8 @@ console.log('🔍 shopify.js starting to execute');
 // No need to redefine them here
 
 // Log config values to ensure they're loaded correctly
-console.log('window.SHOPIFY_CONFIG loaded:', window.SHOPIFY_CONFIG);
-console.log('window.SHOPIFY_BUY_CONFIG loaded:', window.SHOPIFY_BUY_CONFIG);
+
+
 
 // --- Module-level variables for Shopify Buy SDK Client and UI ---
 let shopifyClient = null;
@@ -59,6 +59,10 @@ const PRODUCTS_QUERY = `
                                     amount
                                     currencyCode
                                 }
+                                compareAtPrice {
+                                    amount
+                                    currencyCode
+                                }
                             }
                         }
                     }
@@ -104,6 +108,10 @@ async function fetchProductsByTag(tag, limit = 50) {
                                             amount
                                             currencyCode
                                         }
+                                        compareAtPrice {
+                                            amount
+                                            currencyCode
+                                        }
                                     }
                                 }
                             }
@@ -138,13 +146,13 @@ async function fetchProductsByTag(tag, limit = 50) {
 
 // Function to fetch products from Shopify
 async function fetchProducts() {
-    console.log('Starting fetchProducts() with domain:', window.SHOPIFY_CONFIG.domain);
+
     try {
         const query = PRODUCTS_QUERY;
-        console.log('Using GraphQL query:', query.substring(0, 100) + '...');
+
         
         const fetchUrl = `https://${window.SHOPIFY_CONFIG.domain}/api/2024-01/graphql.json`;
-        console.log('Fetching from URL:', fetchUrl);
+
         
         const response = await fetch(fetchUrl, {
             method: 'POST',
@@ -157,7 +165,7 @@ async function fetchProducts() {
             })
         });
 
-        console.log('Response status:', response.status);
+
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -166,7 +174,7 @@ async function fetchProducts() {
         }
 
         const data = await response.json();
-        console.log('Response data received:', data);
+
         
         if (!data || !data.data || !data.data.products || !data.data.products.edges) {
             console.error('Invalid response structure from Shopify API:', data);
@@ -174,7 +182,7 @@ async function fetchProducts() {
         }
         
         const products = data.data.products.edges.map(edge => edge.node);
-        console.log(`Successfully fetched ${products.length} products`);
+
         return products;
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -215,6 +223,10 @@ async function fetchProductByHandle(handle) {
                                 id
                                 title
                                 price {
+                                    amount
+                                    currencyCode
+                                }
+                                compareAtPrice {
                                     amount
                                     currencyCode
                                 }
@@ -273,7 +285,7 @@ async function fetchProductsWithFilters(filters = {}) {
 
 // Function to display products in a marquee
 async function displayMarqueeProducts(selector, options = {}) {
-    console.log(`[displayMarqueeProducts] Called for selector: ${selector}`);
+
     
     // Try selecting the wrapper first
     const marqueeWrap = document.querySelector(".hero-cta_marquee-wrap");
@@ -284,7 +296,7 @@ async function displayMarqueeProducts(selector, options = {}) {
         console.error(`[displayMarqueeProducts] Direct selector result: ${trackDirect ? 'Found' : 'Not Found'}`);
         return;
     }
-    console.log(`[displayMarqueeProducts] Marquee wrap element found.`);
+
 
     // Now find the track *within* the wrap
     const marqueeTrack = marqueeWrap.querySelector(".marquee-track"); 
@@ -292,10 +304,10 @@ async function displayMarqueeProducts(selector, options = {}) {
         console.error(`[displayMarqueeProducts] Marquee TRACK element not found within .hero-cta_marquee-wrap`);
         return;
     }
-    console.log(`[displayMarqueeProducts] Marquee track element found inside wrap.`);
+
 
     const products = await fetchProductsWithFilters({ limit: options.limit || 10 });
-    console.log(`[displayMarqueeProducts] Fetched ${products.length} products.`);
+
 
     if (products.length === 0) {
         console.warn(`[displayMarqueeProducts] No products found to display.`);
@@ -308,12 +320,12 @@ async function displayMarqueeProducts(selector, options = {}) {
     // Combine classes correctly
     marqueeList.className = 'marquee_list w-dyn-items';
     marqueeList.setAttribute('role', 'list');
-    console.log(`[displayMarqueeProducts] Created marqueeList element.`);
+
 
     // Add product images to the marquee list
     products.forEach((product, index) => {
         const imageUrl = product.images.edges[0]?.node.url || '';
-        console.log(`[displayMarqueeProducts] Processing product ${index + 1}: ${product.title}, Image URL: ${imageUrl}`);
+
         if (!imageUrl) {
             console.warn(`[displayMarqueeProducts] Missing image URL for product: ${product.title}`);
         }
@@ -328,17 +340,17 @@ async function displayMarqueeProducts(selector, options = {}) {
         `;
         marqueeList.appendChild(marqueeItem);
     });
-    console.log(`[displayMarqueeProducts] Finished processing ${products.length} products.`);
+
 
     // Clear existing content and add the marquee list three times for seamless looping
     marqueeTrack.innerHTML = '';
-    console.log(`[displayMarqueeProducts] Cleared innerHTML of marqueeTrack.`);
+
     for (let i = 0; i < 3; i++) {
         const clone = marqueeList.cloneNode(true);
         marqueeTrack.appendChild(clone);
-        console.log(`[displayMarqueeProducts] Appended marqueeList clone #${i + 1}`);
+
     }
-    console.log(`[displayMarqueeProducts] Finished appending clones.`);
+
 }
 
 // Function to display products in a grid
@@ -356,50 +368,19 @@ async function displayProductGrid(selector, options = {}) {
     grid.innerHTML = '';
 
     products.forEach(product => {
-        const price = product.priceRange.minVariantPrice.amount;
-        const currency = product.priceRange.minVariantPrice.currencyCode;
-        
-        // Get all images for the product
-        const images = product.images.edges.map(edge => edge.node);
-        const primaryImage = images[0]?.url || '';
-        const secondaryImage = (images.length > 1 ? images[1]?.url : images[0]?.url) || primaryImage;
-
-        const productCard = document.createElement('div');
-        productCard.className = 'display-contents w-dyn-item';
-        productCard.setAttribute('role', 'listitem');
-        
-        productCard.innerHTML = `
-            <div class="product-card is-grid-column-quarter inset-effect">
-                <a href="/products/${product.handle}" data-product-handle="${product.handle}" class="product-card_link w-inline-block">
-                    <div data-inner-rad="top-left" class="product-card_tag">
-                        <p class="text-weight-bold">${options.tagText || 'best seller'}</p>
-                    </div>
-                    <div data-product-focus="" class="product-card_image-wrapper">
-                        <img src="${secondaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image on-model">
-                        <img src="${primaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image product-focus">
-                    </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="product-name">${product.title}</h6>
-                        <p class="product-price text-size-large">${currency} ${price}</p>
-                    </div>
-                    
-                </a>
-            </div>
-        `;
-        
+        const productCard = createProductCard(product, {
+            showTag: true,
+            tagText: options.tagText || '',
+            additionalClasses: 'is-grid-column-quarter inset-effect',
+            basePath: ''
+        });
         grid.appendChild(productCard);
     });
 }
 
 // Function to fetch products and metadata for a collection (using metaobject product references)
 async function fetchProductsFromCollection(collectionHandle) {
-    console.log(`Fetching collection data for handle: "${collectionHandle}" using type "collections"`);
+
     try {
         // Query the metaobject with product references - using the specific handle of the collection
         // but with the metaobject type "collections" (which is the definition type, not the handle)
@@ -442,7 +423,7 @@ async function fetchProductsFromCollection(collectionHandle) {
         }
         
         const metadataData = await metadataResponse.json();
-        console.log('Metaobject query response:', metadataData);
+
         
         // Get the first metaobject that matches our query
         const metaobject = metadataData.data?.metaobjects?.edges?.[0]?.node;
@@ -468,15 +449,15 @@ async function fetchProductsFromCollection(collectionHandle) {
         }
         
         const fields = metaobject.fields || [];
-        console.log('Metaobject fields:', fields);
+
         
         // Dump each field's key and value for debugging
         fields.forEach(field => {
-            console.log(`Field ${field.key} (${field.type}): ${field.value}`);
+
             if (field.reference) {
-                console.log(`Field ${field.key} has reference:`, field.reference);
+
                 if (field.reference.__typename === 'MediaImage' || field.reference.__typename === 'File') {
-                    console.log(`Field ${field.key} is a file/image reference type`);
+
                 }
             }
         });
@@ -491,9 +472,9 @@ async function fetchProductsFromCollection(collectionHandle) {
           getMetafieldByKey(fields, 'accent_color');
         
         // DEBUG LOGS
-        console.log('Name field found:', nameField); 
-        console.log('Description field found:', descriptionField); 
-        console.log('Color field found:', colorField);
+
+
+
         // END DEBUG LOGS
         
         let color = '';
@@ -501,11 +482,11 @@ async function fetchProductsFromCollection(collectionHandle) {
           if (colorField.value) {
             // Direct value (string)
             color = colorField.value;
-            console.log(`Using direct color value: ${color}`);
+
           } else if (colorField.references && colorField.references.edges.length > 0) {
             // Reference value
             const colorRef = colorField.references.edges[0].node;
-            console.log('Color reference:', colorRef);
+
             
             // Try to find color value in the reference
             if (colorRef.value) {
@@ -516,7 +497,7 @@ async function fetchProductsFromCollection(collectionHandle) {
               color = colorRef.hexValue;
             }
             
-            console.log(`Extracted color from reference: ${color}`);
+
           }
         }
         
@@ -526,11 +507,11 @@ async function fetchProductsFromCollection(collectionHandle) {
           if (descriptionField.value) {
             // Direct value (string)
             description = descriptionField.value;
-            console.log(`Using direct description value: ${description}`);
+
           } else if (descriptionField.references && descriptionField.references.edges.length > 0) {
             // Reference value
             const descRef = descriptionField.references.edges[0].node;
-            console.log('Description reference:', descRef);
+
             
             // Try to find description text in the reference
             if (descRef.value) {
@@ -541,13 +522,13 @@ async function fetchProductsFromCollection(collectionHandle) {
               description = descRef.content;
             }
             
-            console.log(`Extracted description from reference: ${description}`);
+
           }
         }
         
-        console.log(`Extracted title: "${title}"`);
-        console.log(`Extracted description: "${description}"`);
-        console.log(`Extracted color: "${color}"`);
+
+
+
         
         // Handle image field which may be a file reference
         let imageUrl = '';
@@ -566,18 +547,18 @@ async function fetchProductsFromCollection(collectionHandle) {
 
           // Check for direct image URL value
           if (imageField.value && (imageField.value.startsWith('http') || imageField.value.startsWith('//'))) {
-            console.log('Using direct image URL value:', imageField.value);
+
             imageUrl = imageField.value;
           } 
           // Check for image reference
           else if (imageField.reference) {
-            console.log('Using direct image reference');
+
             
             // Log the entire reference object to see what's available
-            console.log('Image reference object:', imageField.reference);
+
             
             if (imageField.reference.__typename === 'MediaImage') {
-              console.log('Using MediaImage reference');
+
               if (imageField.reference.image) {
                 imageUrl = imageField.reference.image.url;
                 imageAlt = imageField.reference.image.altText || '';
@@ -585,25 +566,25 @@ async function fetchProductsFromCollection(collectionHandle) {
                 imageUrl = imageField.reference.url;
               }
             } else if (imageField.reference.__typename === 'File') {
-              console.log('Using File reference');
+
               imageUrl = imageField.reference.originalSource?.url || imageField.reference.url || '';
               imageAlt = imageField.reference.altText || '';
             } else {
-              console.log(`Unknown reference type: ${imageField.reference.__typename}`);
+
               // Try to find any URL property recursively
               imageUrl = findUrl(imageField.reference) || '';
             }
           }
           // Check for image references array
           else if (imageField.references && imageField.references.edges && imageField.references.edges.length > 0) {
-            console.log('Image references found');
+
             const imageReference = imageField.references.edges[0].node;
             
             // Log the entire reference object to see what's available
-            console.log('Image reference object:', imageReference);
+
             
             if (imageReference.__typename === 'MediaImage') {
-              console.log('Using MediaImage reference');
+
               if (imageReference.image) {
                 imageUrl = imageReference.image.url;
                 imageAlt = imageReference.image.altText || '';
@@ -611,21 +592,21 @@ async function fetchProductsFromCollection(collectionHandle) {
                 imageUrl = imageReference.url;
               }
             } else if (imageReference.__typename === 'File') {
-              console.log('Using File reference');
+
               imageUrl = imageReference.originalSource?.url || imageReference.url || '';
               imageAlt = imageReference.altText || '';
             } else {
-              console.log(`Unknown reference type: ${imageReference.__typename}`);
+
               // Try to find any URL property recursively
               imageUrl = findUrl(imageReference) || '';
             }
           } else {
-            console.log('No image references found in metaobject');
+
           }
           
-          console.log(`Extracted image URL: ${imageUrl}`);
+
         } else {
-          console.log('No image field found in metaobject');
+
         }
         
         // Extract products from the products field references
@@ -634,9 +615,9 @@ async function fetchProductsFromCollection(collectionHandle) {
         
         if (productsField && productsField.references && productsField.references.edges) {
             products = productsField.references.edges.map(edge => edge.node);
-            console.log(`Found ${products.length} products in metaobject references`);
+
         } else {
-            console.log('No product references found in metaobject, falling back to tag-based query');
+
             // Fall back to tag-based approach if no products field or no references
             products = await fetchProductsByTag(collectionHandle);
         }
@@ -650,7 +631,7 @@ async function fetchProductsFromCollection(collectionHandle) {
             imageAlt
         };
         
-        console.log('Returning collection data:', collectionData);
+
         
         return {
             collection: collectionData,
@@ -660,7 +641,7 @@ async function fetchProductsFromCollection(collectionHandle) {
         console.error('Error fetching collection products:', error);
         // Fall back to tag-based approach if metaobject query fails
         try {
-            console.log('Falling back to tag-based query after error');
+
             const products = await fetchProductsByTag(collectionHandle);
             
         return {
@@ -701,11 +682,11 @@ async function displayCollectionMarquee(selector, collectionHandle) {
         return;
     }
 
-    console.log(`Displaying collection marquee for: ${collectionHandle}`);
+
     const { collection, products } = await fetchProductsFromCollection(collectionHandle);
     
-    console.log('Collection data received for display:', collection);
-    console.log('Products in collection received for display:', products.length);
+
+
     
     // Format the collection title - capitalize words and remove hyphens
     const formattedTitle = collection.title 
@@ -721,16 +702,16 @@ async function displayCollectionMarquee(selector, collectionHandle) {
     const collectionImage = document.querySelector('.collection_image-wrap img');
     const shopCollectionButton = document.querySelector('.collection_content .button');
     
-    console.log('HTML elements to update:');
-    console.log('- Title element:', collectionTitle);
-    console.log('- Description element:', collectionDescription);
-    console.log('- Section element:', collectionSection);
-    console.log('- Image element:', collectionImage);
-    console.log('- Button element:', shopCollectionButton);
+
+
+
+
+
+
     
     if (collectionTitle) {
         collectionTitle.textContent = `${formattedTitle} Collection`;
-        console.log(`Updated collection title to: ${formattedTitle} Collection`);
+
     } else {
         console.warn('Collection title element not found');
     }
@@ -738,7 +719,7 @@ async function displayCollectionMarquee(selector, collectionHandle) {
     if (collectionDescription) {
         if (collection.description) {
         collectionDescription.textContent = collection.description;
-            console.log(`Updated collection description: ${collection.description.substring(0, 30)}...`);
+
         } else {
             console.warn('No collection description available in data');
         }
@@ -748,14 +729,14 @@ async function displayCollectionMarquee(selector, collectionHandle) {
 
     if (collectionSection) {
         if (collection.color) {
-            console.log(`Setting color CSS variable to: ${collection.color}`);
+
         collectionSection.style.setProperty('--collection-color', collection.color);
-            console.log(`Applied collection color: ${collection.color}`);
+
             
             // Check if the color was actually applied
             const computedStyle = getComputedStyle(collectionSection);
             const appliedColor = computedStyle.getPropertyValue('--collection-color');
-            console.log(`Computed color value: ${appliedColor}`);
+
         } else {
             console.warn('No collection color available in data');
         }
@@ -765,11 +746,11 @@ async function displayCollectionMarquee(selector, collectionHandle) {
 
     if (collectionImage) {
         if (collection.image) {
-            console.log(`Setting image src to: ${collection.image}`);
+
         collectionImage.src = collection.image;
             collectionImage.alt = collection.imageAlt || formattedTitle;
         collectionImage.style.objectPosition = 'center 15%';
-            console.log(`Set collection image: ${collection.image}`);
+
         } else {
             console.warn('No collection image URL available in data');
         }
@@ -780,7 +761,7 @@ async function displayCollectionMarquee(selector, collectionHandle) {
     // Update shop collection button link
     if (shopCollectionButton) {
         shopCollectionButton.href = `all-products.html?collection=${collectionHandle}`;
-        console.log(`Updated shop collection button link to: all-products.html?collection=${collectionHandle}`);
+
     } else {
         console.warn('Shop collection button element not found');
     }
@@ -793,7 +774,7 @@ async function displayCollectionMarquee(selector, collectionHandle) {
 
     // Add product images to the marquee list
     if (products.length > 0) {
-        console.log(`Adding ${products.length} products to marquee`);
+
     products.forEach(product => {
         const imageUrl = product.images.edges[0]?.node.url || '';
         const marqueeItem = document.createElement('div');
@@ -818,7 +799,7 @@ async function displayCollectionMarquee(selector, collectionHandle) {
         marqueeTrack.appendChild(clone);
     }
     
-    console.log('Collection marquee display completed');
+
 }
 
 // Function to fetch product type collections (now based on tags)
@@ -850,7 +831,7 @@ async function fetchProductTypeCollections() {
             });
         });
         
-        console.log('Extracted product types from tags:', [...typeTagsMap.values()]);
+
         return [...typeTagsMap.values()];
     } catch (error) {
         console.error('Error fetching product type collections:', error);
@@ -869,7 +850,7 @@ async function displayProductTypeCollections() {
 
     // Fetch product type categories
     const typeCategories = await fetchProductTypeCategories();
-    console.log('Product type categories:', typeCategories);
+
 
     // Clear existing content but keep the template
     const template = templateCard.cloneNode(true);
@@ -996,66 +977,18 @@ function initializeSorting() {
             
             // Display sorted products
             sortedProducts.forEach(product => {
-                const price = product.priceRange.minVariantPrice.amount;
-                const currency = product.priceRange.minVariantPrice.currencyCode;
-                
-                const images = product.images.edges.map(edge => edge.node);
-                const primaryImage = images[0]?.url || '';
-                const secondaryImage = (images.length > 1 ? images[1]?.url : images[0]?.url) || primaryImage;
+                const productCard = createProductCard(product, {
+                    showTag: true,
+                    basePath: '',
+                    onClick: (product) => {
 
-                const productCard = document.createElement('div');
-                productCard.className = 'w-dyn-item';
-                productCard.setAttribute('role', 'listitem');
-                
-                productCard.innerHTML = `
-                    <div class="product-card">
-                        <a href="/products/${product.handle}" 
-                           data-product-handle="${product.handle}"
-                           class="product-card_link w-inline-block">
-                            <div data-inner-rad="top-left" class="product-card_tag">
-                                <p class="text-weight-bold"></p>
-                            </div>
-                            <div class="product-card_image-wrapper">
-                                <img src="${secondaryImage}" 
-                                     alt="${product.title}" 
-                                     loading="lazy" 
-                                     class="product-card_image on-model">
-                                <img src="${primaryImage}" 
-                                     alt="${product.title}" 
-                                     loading="lazy" 
-                                     class="product-card_image product-focus">
-                            </div>
-                            <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                                <h6 class="display-inline">${product.title}</h6>
-                                <div class="spacer-0d25"></div>
-                                <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
-                            </div>
-
-                        </a>
-                    </div>
-                `;
-                
-                // Check if product has top-seller tag
-                const isTopSeller = product.tags && product.tags.includes('top-seller');
-                const tagElement = productCard.querySelector('.product-card_tag');
-                if (isTopSeller) {
-                    tagElement.querySelector('p').textContent = 'best seller';
-                } else {
-                    tagElement.style.display = 'none';
-                }
-                
-                // Add click handler directly to the link
-                const link = productCard.querySelector('a');
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    console.log('Product clicked:', product.handle);
-                    if (window.productRouter) {
-                        window.productRouter.navigateToProduct(product.handle);
-                    } else {
-                        console.error('Product router not initialized');
+                        if (window.productRouter) {
+                            window.productRouter.navigateToProduct(product.handle);
+                        } else {
+                            console.error('Product router not initialized');
+                        }
                     }
                 });
-                
                 filterFeed.appendChild(productCard);
             });
         });
@@ -1105,7 +1038,7 @@ async function fetchProductColors() {
         }
 
         const data = await response.json();
-        console.log('Raw color patterns:', JSON.stringify(data, null, 2));
+
 
         const colorPatterns = data.data.metaobjects.edges.map(edge => {
             const fields = edge.node.fields;
@@ -1117,7 +1050,7 @@ async function fetchProductColors() {
             };
         });
 
-        console.log('Processed color patterns:', colorPatterns);
+
 
         // Populate the color filters UI
         const colorFilters = document.getElementById('colour-filters');
@@ -1262,9 +1195,9 @@ async function fetchFilterCategories() {
             });
         });
         
-        console.log('Types:', [...typesMap.values()]);
-        console.log('Collections:', [...collectionsMap.values()]);
-        console.log('Filters:', [...filtersMap.values()]);
+
+
+
         
         // Return all three categories
         return { 
@@ -1319,7 +1252,7 @@ function mapCategoryToType(category) {
 
 // Function to fetch product types from the metaobject (Revised approach v3 - include product GIDs)
 async function fetchTypesFromMetaobject() {
-    console.log('[fetchTypesFromMetaobject] Fetching product types from "types" metaobject - v3');
+
     try {
         // 1. Initial Query: Fetch metaobjects with basic fields + image GID + product GIDs list
         const initialQuery = `
@@ -1354,7 +1287,7 @@ async function fetchTypesFromMetaobject() {
         }
         
         const initialData = await initialResponse.json();
-        console.log('[fetchTypesFromMetaobject] Initial query response:', initialData);
+
         
         if (initialData.errors) {
             console.error('[fetchTypesFromMetaobject] GraphQL errors in initial query:', initialData.errors);
@@ -1363,7 +1296,7 @@ async function fetchTypesFromMetaobject() {
         
         const metaobjects = initialData.data?.metaobjects?.edges || [];
         if (metaobjects.length === 0) {
-             console.log('[fetchTypesFromMetaobject] No metaobjects of type "types" found.');
+
              return [];
         }
 
@@ -1396,7 +1329,7 @@ async function fetchTypesFromMetaobject() {
                 }
             }
             
-            console.log(`[fetchTypesFromMetaobject] Processing type: ${name}, Image GID: ${imageGid}, Product GIDs: ${productGids.length}`);
+
 
             let typeData = {
                 id: node.id,
@@ -1417,13 +1350,13 @@ async function fetchTypesFromMetaobject() {
         });
 
         if (mediaImageGids.length === 0) {
-            console.log('[fetchTypesFromMetaobject] No valid MediaImage GIDs found. Returning types without images.');
+
              // Still return types, just without images, include productGids
             return typesInfo.map(t => { delete t.imageGid; return t; }); 
         }
 
         // 3. Second Query (Nodes): Fetch MediaImage URLs
-        console.log(`[fetchTypesFromMetaobject] Fetching URLs for ${mediaImageGids.length} MediaImage GIDs:`, mediaImageGids);
+
         const nodesQuery = `
             query GetNodeUrls($ids: [ID!]!) {
                 nodes(ids: $ids) {
@@ -1456,7 +1389,7 @@ async function fetchTypesFromMetaobject() {
         }
 
         const nodesData = await nodesResponse.json();
-        console.log('[fetchTypesFromMetaobject] Nodes query response:', nodesData);
+
 
          if (nodesData.errors) {
             console.error('[fetchTypesFromMetaobject] GraphQL errors in nodes query:', nodesData.errors);
@@ -1471,7 +1404,7 @@ async function fetchTypesFromMetaobject() {
                   console.warn(`[fetchTypesFromMetaobject] URL data missing or unexpected type for GID: ${node.id}, Type: ${node.__typename}`);
              }
         });
-        console.log('[fetchTypesFromMetaobject] Created URL data map:', urlDataMap);
+
 
         // 4. Combine Data (Image URLs and Product GIDs)
         const finalTypesList = typesInfo.map(typeInfo => {
@@ -1486,7 +1419,7 @@ async function fetchTypesFromMetaobject() {
         });
 
         // 5. Return
-        console.log('[fetchTypesFromMetaobject] Processed final product types list (with productGids):', finalTypesList);
+
         return finalTypesList;
 
     } catch (error) {
@@ -1507,7 +1440,7 @@ async function fetchProductTypeCategories() {
         }
         
         // Fallback to the old method if no types were found in the metaobject
-        console.log('No types found in metaobject, falling back to product types');
+
         
         // Fetch all products
         const products = await fetchProducts();
@@ -1533,7 +1466,7 @@ async function fetchProductTypeCategories() {
             }
         });
         
-        console.log('Extracted product types from categories (fallback):', [...typeMap.values()]);
+
         return [...typeMap.values()];
     } catch (error) {
         console.error('Error fetching product categories:', error);
@@ -1578,10 +1511,10 @@ async function applyFilters() {
         // We fetch all (or a large number) and filter everything client-side
         const query = `
             query {
-                products(first: 250) { # Fetch a larger batch for client-side filtering
+                products(first: 250) {
                     edges {
                         node {
-                            id # Need ID for filtering
+                            id
                             title
                             handle
                             tags
@@ -1600,6 +1533,21 @@ async function applyFilters() {
                                     }
                                 }
                             }
+                            variants(first: 1) {
+                                edges {
+                                    node {
+                                        id
+                                        price {
+                                            amount
+                                            currencyCode
+                                        }
+                                        compareAtPrice {
+                                            amount
+                                            currencyCode
+                                        }
+                                    }
+                                }
+                            }
                             metafield(namespace: "shopify", key: "color-pattern") {
                                 value
                             }
@@ -1609,7 +1557,7 @@ async function applyFilters() {
             }
         `;
 
-        console.log('[applyFilters] Fetching initial batch of products...');
+
         const response = await fetch(`https://${SHOPIFY_CONFIG.domain}/api/2024-01/graphql.json`, {
             method: 'POST',
             headers: {
@@ -1627,44 +1575,44 @@ async function applyFilters() {
         }
 
         let products = data.data.products.edges.map(edge => edge.node);
-        console.log(`[applyFilters] Fetched ${products.length} products initially (before client-side filters).`);
+
 
         // Apply collection filter using productGids from stored metaobject data (client-side)
         if (selectedCollectionValue !== 'all') {
-            console.log(`[applyFilters] Applying client-side collection filter for handle: ${selectedCollectionValue}`);
+
             const selectedCollectionData = window.allCollectionsData?.find(coll => coll.handle === selectedCollectionValue);
             
             if (selectedCollectionData && selectedCollectionData.productGids) {
                 const allowedProductGids = new Set(selectedCollectionData.productGids);
-                console.log(`[applyFilters] Found ${allowedProductGids.size} allowed product GIDs for collection ${selectedCollectionValue}.`);
+
                 products = products.filter(product => allowedProductGids.has(product.id));
             } else {
                 console.warn(`[applyFilters] Could not find product GID list for selected collection handle: ${selectedCollectionValue}. Filter not applied.`);
                 // products = []; // Optionally clear if collection data is missing
             }
-            console.log(`[applyFilters] ${products.length} products remaining after collection filter.`);
+
         }
 
         // Apply type filter using productGids from stored metaobject data (client-side)
         if (selectedTypeValue !== 'all') {
-            console.log(`[applyFilters] Applying client-side type filter for handle: ${selectedTypeValue}`);
+
             const selectedTypeData = window.allProductTypesData?.find(type => type.handle === selectedTypeValue);
             
             if (selectedTypeData && selectedTypeData.productGids) {
                 const allowedProductGids = new Set(selectedTypeData.productGids); 
-                console.log(`[applyFilters] Found ${allowedProductGids.size} allowed product GIDs for type ${selectedTypeValue}.`);
+
                 products = products.filter(product => allowedProductGids.has(product.id));
             } else {
                 console.warn(`[applyFilters] Could not find product GID list for selected type handle: ${selectedTypeValue}. Filter not applied.`);
                 // products = []; 
             }
-            console.log(`[applyFilters] ${products.length} products remaining after type filter.`);
+
         }
 
         // Apply color filter (client-side)
         if (selectedColors.length > 0) {
              // ... existing color filter logic ...
-             console.log('[applyFilters] Applying client-side color filter...');
+
             products = products.filter(product => {
                 if (!product.metafield?.value) return false;
                 try {
@@ -1678,12 +1626,12 @@ async function applyFilters() {
                     return false;
                 }
             });
-             console.log(`[applyFilters] ${products.length} products remaining after color filter.`);
+
         }
 
         // Re-render products
         displayFilteredProducts(products);
-        console.log(`[applyFilters] Displaying ${products.length} filtered products.`);
+
     } catch (error) {
         console.error('[applyFilters] Error applying filters:', error);
         displayFilteredProducts([]);
@@ -1692,7 +1640,7 @@ async function applyFilters() {
 
 // Function to initialize filters
 async function initializeFilters() {
-    console.log('Initializing filters...');
+
     const filterModal = document.querySelector('.filter_filters-modal');
     const filterButton = document.querySelector('.filter_filters-button');
     const colorFilters = document.getElementById('colour-filters');
@@ -1712,11 +1660,11 @@ async function initializeFilters() {
         preSelectedType = urlParams.get('type');
         
         if (preSelectedCollection) {
-            console.log('Found collection in URL:', preSelectedCollection);
+
         }
         
         if (preSelectedType) {
-            console.log('Found type in URL:', preSelectedType);
+
         }
     } catch (error) {
         console.error('Error parsing URL parameters:', error);
@@ -1726,7 +1674,7 @@ async function initializeFilters() {
     filterButton?.addEventListener('click', (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('Filter button clicked');
+
         filterModal.classList.toggle('is-open');
     });
 
@@ -1745,12 +1693,12 @@ async function initializeFilters() {
     // Fetch type categories and store globally
     const types = await fetchProductTypeCategories(); 
     window.allProductTypesData = types; // Store the fetched types data
-    console.log('[initializeFilters] Stored allProductTypesData:', window.allProductTypesData);
+
     
     // Fetch collections using the new metaobject function and store globally
     const collections = await fetchCollectionsFromMetaobject();
     window.allCollectionsData = collections; // Store the fetched collections data
-    console.log('[initializeFilters] Stored allCollectionsData:', window.allCollectionsData);
+
     
     // Log fetched filter data (optional, for debugging)
     // console.log('Fetched filter data:', { colorPatterns, types, collections });
@@ -1758,7 +1706,7 @@ async function initializeFilters() {
     // Populate color filters
     if (colorFilters && colorPatterns.length > 0) {
         // ... existing color filter population ...
-        console.log('Populating color filters:', colorPatterns);
+
         colorFilters.innerHTML = ''; // Clear existing filters
         colorPatterns.forEach(pattern => {
             const colorFilter = document.createElement('div');
@@ -1789,7 +1737,7 @@ async function initializeFilters() {
     // Populate type filters (using the globally stored data now)
     if (typeFilters && window.allProductTypesData.length > 0) {
        // ... existing type filter population ...
-        console.log('Populating type filters from window.allProductTypesData:', window.allProductTypesData);
+
         typeFilters.innerHTML = ''; 
         
         // Add single "All" option
@@ -1836,7 +1784,7 @@ async function initializeFilters() {
     
     // Populate collection filters (using the new globally stored data)
     if (collectionFilters && window.allCollectionsData.length > 0) {
-        console.log('Populating collection filters from window.allCollectionsData:', window.allCollectionsData);
+
         collectionFilters.innerHTML = ''; 
         
         // Add single "All" option
@@ -1889,7 +1837,7 @@ async function initializeFilters() {
 
     // Apply filters
     applyButton?.addEventListener('click', async () => {
-        console.log('Apply button clicked');
+
         
         // Get selected filters
         const selectedColors = Array.from(colorFilters.querySelectorAll('input:checked')).map(input => ({
@@ -1978,7 +1926,7 @@ async function initializeFilters() {
     
     // If a collection or type was selected from the URL, automatically apply the filter
     if (preSelectedCollection || preSelectedType) {
-        console.log('Auto-applying filters from URL parameters');
+
         
         // Find the selected collection's title for the filter tag
         let selectedCollectionTitle = 'Collection';
@@ -2157,73 +2105,45 @@ function displayFilteredProducts(products) {
         return;
     }
 
-    products.forEach(product => {
-        const price = product.priceRange.minVariantPrice.amount;
-        const currency = product.priceRange.minVariantPrice.currencyCode;
-        
-        const images = product.images.edges.map(edge => edge.node);
-        const primaryImage = images[0]?.url || '';
-        const secondaryImage = (images.length > 1 ? images[1]?.url : images[0]?.url) || primaryImage;
+    // Check if we're on GitHub Pages and adjust paths accordingly
+    const isGitHubPages = window.location.hostname === "sylvgira.com" || 
+                         window.location.pathname.startsWith('/beaubnana/');
+    const basePath = isGitHubPages ? '/beaubnana' : '';
 
-        const productCard = document.createElement('div');
-        productCard.className = 'w-dyn-item';
+    products.forEach(product => {
+        const productCard = createProductCard(product, {
+            showTag: true,
+            basePath: basePath,
+            onClick: (product) => {
+
+                if (window.productRouter) {
+                    window.productRouter.navigateToProduct(product.handle);
+                } else {
+                    console.error('Product router not initialized');
+                }
+            }
+        });
+        
         productCard.setAttribute('role', 'listitem');
-        
-        productCard.innerHTML = `
-            <div class="product-card">
-                <a href="/products/${product.handle}" 
-                   data-product-handle="${product.handle}"
-                   class="product-card_link w-inline-block">
-                    <div data-inner-rad="top-left" class="product-card_tag">npm run build
-                        <p class="text-weight-bold"></p>
-                    </div>
-                    <div class="product-card_image-wrapper">
-                        <img src="${secondaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image on-model">
-                        <img src="${primaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image product-focus">
-                    </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="display-inline">${product.title}</h6>
-                        <div class="spacer-0d25"></div>
-                        <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
-                    </div>
-                </a>
-            </div>
-        `;
-        
-        // Check if product has top-seller tag
-        const isTopSeller = product.tags && product.tags.includes('top-seller');
-        const tagElement = productCard.querySelector('.product-card_tag');
-        if (isTopSeller) {
-            tagElement.querySelector('p').textContent = 'best seller';
-        } else {
-            tagElement.style.display = 'none';
-        }
-        
         filterFeed.appendChild(productCard);
     });
 }
 
 // Function to display all products in the all-products page format
 async function displayAllProducts() {
-    console.log('Displaying all products...');
+
     const filterFeed = document.querySelector('.filter_feed .collection-list');
     if (!filterFeed) {
         console.error('Could not find filter feed element (.filter_feed .collection-list)');
-        console.log('Available elements with filter_feed class:', document.querySelectorAll('.filter_feed').length);
-        console.log('DOM structure:', document.querySelector('.filter_feed')?.innerHTML);
+
+
         return;
     }
 
-    console.log('About to fetch products using fetchProducts()...');
+
     try {
     const products = await fetchProducts();
-        console.log('Fetched products:', products);
+
         
         if (!products || products.length === 0) {
             console.error('No products returned from API - check Shopify domain and access token');
@@ -2234,7 +2154,7 @@ async function displayAllProducts() {
             return;
         }
         
-        console.log('Number of products:', products.length);
+
     
     // Clear existing items
     filterFeed.innerHTML = '';
@@ -2243,67 +2163,24 @@ async function displayAllProducts() {
         const isGitHubPages = window.location.hostname === "sylvgira.com" || 
                              window.location.pathname.startsWith('/beaubnana/');
         const basePath = isGitHubPages ? '/beaubnana' : '';
-        console.log("Shopify basePath for product links:", basePath);
+
 
     products.forEach(product => {
-        const price = product.priceRange.minVariantPrice.amount;
-        const currency = product.priceRange.minVariantPrice.currencyCode;
-        
-        const images = product.images.edges.map(edge => edge.node);
-        const primaryImage = images[0]?.url || '';
-        const secondaryImage = (images.length > 1 ? images[1]?.url : images[0]?.url) || primaryImage;
-
-        const productCard = document.createElement('div');
-        productCard.className = 'w-dyn-item';
-        productCard.setAttribute('role', 'listitem');
-        
-        productCard.innerHTML = `
-            <div class="product-card">
-                    <a href="${basePath}/products/${product.handle}" 
-                   data-product-handle="${product.handle}"
-                   class="product-card_link w-inline-block">
-                    <div data-inner-rad="top-left" class="product-card_tag">
-                        <p class="text-weight-bold"></p>
-                    </div>
-                    <div class="product-card_image-wrapper">
-                        <img src="${secondaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image on-model">
-                        <img src="${primaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image product-focus">
-                    </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="display-inline">${product.title}</h6>
-                        <div class="spacer-0d25"></div>
-                        <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
-                    </div>
-                </a>
-            </div>
-        `;
-        
-            // Check if product has top-seller tag
-            const isTopSeller = product.tags && product.tags.includes('top-seller');
-        const tagElement = productCard.querySelector('.product-card_tag');
-        if (isTopSeller) {
-            tagElement.querySelector('p').textContent = 'best seller';
-        } else {
-            tagElement.style.display = 'none';
-        }
-        
+        const productCard = createProductCard(product, {
+            showTag: true,
+            basePath: basePath
+        });
         filterFeed.appendChild(productCard);
     });
 
-        console.log('Products displayed:', products.length);
+
 
     // Initialize sorting after products are displayed
     initializeSorting();
     
     // Initialize filters
     await initializeFilters();
-    console.log('Products and filters initialized');
+
     } catch (error) {
         console.error('Error in displayAllProducts:', error);
     }
@@ -2357,33 +2234,33 @@ window.ShopifyAPI = {
     fetchCollectionsFromMetaobject // Added missing function
 };
 
-console.log('✅ ShopifyAPI fully initialized with all methods:', Object.keys(window.ShopifyAPI));
+
 
 // Initialize Shopify Buy SDK client (modified to run only once)
 function initShopifyBuyClient() {
     // If initialization already started or completed, return the existing promise
     if (shopifyInitializationPromise) {
-        console.log('Shopify Buy SDK initialization already in progress or completed.');
+
         return shopifyInitializationPromise;
     }
 
-    console.log('Starting Shopify Buy SDK initialization...');
+
     shopifyInitializationPromise = new Promise((resolve, reject) => {
         const scriptURL = "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
         
         // If SDK is already loaded, use it
         if (window.ShopifyBuy) {
-             console.log('ShopifyBuy object already exists.');
+
             if (window.ShopifyBuy.UI) {
                 try {
-                     console.log('Building client...');
+
                     shopifyClient = ShopifyBuy.buildClient({
                         domain: window.SHOPIFY_BUY_CONFIG.domain,
                         storefrontAccessToken: window.SHOPIFY_BUY_CONFIG.storefrontAccessToken,
                     });
-                     console.log('Client built. Waiting for UI ready...');
+
                     ShopifyBuy.UI.onReady(shopifyClient).then(ui => {
-                         console.log('ShopifyBuy UI is ready.', ui);
+
                         shopifyUi = ui; // Store the UI object
                         resolve({ client: shopifyClient, ui: shopifyUi });
                     }).catch(err => {
@@ -2399,7 +2276,7 @@ function initShopifyBuyClient() {
                 loadScript(resolve, reject); // Reload script if UI isn't ready
             }
         } else {
-             console.log('ShopifyBuy object not found. Loading script...');
+
             loadScript(resolve, reject);
         }
     });
@@ -2414,17 +2291,17 @@ function loadScript(resolve, reject) {
     script.src = "https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js";
     
     script.onload = () => {
-         console.log('Shopify Buy SDK script loaded.');
+
          try {
-             console.log('Building client...');
+
              shopifyClient = ShopifyBuy.buildClient({
                  domain: window.SHOPIFY_BUY_CONFIG.domain,
                  storefrontAccessToken: window.SHOPIFY_BUY_CONFIG.storefrontAccessToken,
              });
-             console.log('Client built. Waiting for UI ready...');
+
              // Wait for the UI layer to be ready
              ShopifyBuy.UI.onReady(shopifyClient).then(ui => {
-                 console.log('ShopifyBuy UI is ready after script load.', ui);
+
                  shopifyUi = ui; // Store the UI object
                  resolve({ client: shopifyClient, ui: shopifyUi });
              }).catch(err => {
@@ -2448,7 +2325,7 @@ function loadScript(resolve, reject) {
 
 // Initialize product buy button for product pages (updated to use shared client/ui)
 async function initProductBuyButton(productId) {
-    console.log(`Attempting to initialize product buy button for ID: ${productId}`);
+
     try {
         // Ensure initialization is complete before proceeding
         await initShopifyBuyClient(); 
@@ -2468,15 +2345,15 @@ async function initProductBuyButton(productId) {
         
         // Use productId parameter directly (already verified in product-router.js)
         const productIdToUse = productId;
-        console.log(`Using product ID: ${productIdToUse}`);
+
         
         // Clear the container FIRST
         productComponentNode.innerHTML = '';
-        console.log('Cleared #product-component container.');
+
         
         // --- REVERT TO ORIGINAL COMPLEX OPTIONS --- 
         // These match closer to the user's example and config.js defaults
-        console.log('Calling shopifyUi.createComponent... (with original options)');
+
         shopifyUi.createComponent("product", {
             id: productIdToUse, // This should now be the numeric ID
             node: productComponentNode,
@@ -2592,7 +2469,7 @@ async function initProductBuyButton(productId) {
         });
         // --- END REVERTED OPTIONS ---
         
-        console.log(`✅ Product buy button initialized successfully for product ID: ${productIdToUse}`);
+
     } catch (error) {
         // Log the specific error encountered during initialization
         console.error(`❌ Error initializing product buy button for ID ${productId}:`, error);
@@ -2601,7 +2478,7 @@ async function initProductBuyButton(productId) {
 
 // Initialize cart for non-product pages (updated to use shared client/ui)
 async function initCart(cartPosition = 'bottom right') {
-    console.log('Attempting to initialize cart...');
+
     try {
         // Ensure initialization is complete before proceeding
         await initShopifyBuyClient();
@@ -2613,7 +2490,7 @@ async function initCart(cartPosition = 'bottom right') {
         }
 
         // Create cart component
-        console.log('Calling shopifyUi.createComponent for cart...');
+
         shopifyUi.createComponent("cart", {
             moneyFormat: window.SHOPIFY_BUY_CONFIG.moneyFormat,
             options: {
@@ -2645,7 +2522,7 @@ async function initCart(cartPosition = 'bottom right') {
             },
         });
         
-        console.log("✅ Cart initialized successfully");
+
     } catch (error) {
         console.error("❌ Error initializing cart:", error);
     }
@@ -2653,7 +2530,7 @@ async function initCart(cartPosition = 'bottom right') {
 
 // Initialize Shopify Buy functionality based on page type (Simplified)
 async function initShopifyBuy() {
-    console.log('Executing initShopifyBuy...');
+
     // Product page initialization is handled by product-router.js calling initProductBuyButton directly.
     // This function now primarily ensures the SDK is loaded and initializes the cart for non-product pages.
     
@@ -2665,16 +2542,16 @@ async function initShopifyBuy() {
         const isProductPage = window.location.pathname.includes('/products/');
         
         if (!isProductPage) {
-             console.log('initShopifyBuy: Not on a product page, initializing cart.');
+
             // Initialize the cart on non-product pages
             await initCart();
         } else {
-             console.log('initShopifyBuy: On a product page, cart initialization skipped (handled by router).');
+
          }
          
          // Optionally dispatch an event to signal readiness
          document.dispatchEvent(new CustomEvent('shopify-buy-initialized'));
-         console.log('Dispatched shopify-buy-initialized event.');
+
          
     } catch (error) {
         console.error('Error during initShopifyBuy:', error);
@@ -2700,52 +2577,14 @@ async function displayCollectionGrid(selector, collectionHandle, options = {}) {
     grid.innerHTML = '';
 
     limitedProducts.forEach(product => {
-        const price = product.priceRange.minVariantPrice.amount;
-        const currency = product.priceRange.minVariantPrice.currencyCode;
+        const productCard = createProductCard(product, {
+            showTag: true,
+            tagText: options.tagText || '',
+            additionalClasses: 'is-grid-column-quarter inset-effect',
+            basePath: ''
+        });
         
-        // Get all images for the product
-        const images = product.images.edges.map(edge => edge.node);
-        const primaryImage = images[0]?.url || '';
-        const secondaryImage = (images.length > 1 ? images[1]?.url : images[0]?.url) || primaryImage;
-
-        const productCard = document.createElement('div');
-        productCard.className = 'display-contents w-dyn-item';
         productCard.setAttribute('role', 'listitem');
-        
-        productCard.innerHTML = `
-            <div class="product-card is-grid-column-quarter inset-effect">
-                <a href="/products/${product.handle}" data-product-handle="${product.handle}" class="product-card_link w-inline-block">
-                    <div data-inner-rad="top-left" class="product-card_tag">
-                        <p class="text-weight-bold">${options.tagText || ''}</p>
-                    </div>
-                        <div data-product-focus="" class="product-card_image-wrapper">
-                        <img src="${secondaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image on-model">
-                        <img src="${primaryImage}" 
-                             alt="${product.title}" 
-                             loading="lazy" 
-                             class="product-card_image product-focus">
-                    </div>
-                    <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
-                        <h6 class="product-name">${product.title}</h6>
-                        <p class="product-price text-size-large">${currency} ${price}</p>
-                    </div>
-
-                </a>
-            </div>
-        `;
-        
-        // Check if product has "util:top-seller" tag and display if found
-        const isTopSeller = product.tags && (product.tags.includes('util:top-seller') || product.tags.includes('top-seller'));
-        const tagElement = productCard.querySelector('.product-card_tag');
-        if (isTopSeller) {
-            tagElement.querySelector('p').textContent = options.tagText || 'best seller';
-        } else if (!options.tagText) {
-            tagElement.style.display = 'none';
-        }
-        
         grid.appendChild(productCard);
     });
 }
@@ -2785,20 +2624,20 @@ async function debugCollectionsMetaobjects() {
         }
 
         const data = await response.json();
-        console.log('Available collections metaobjects:', data);
+
         
         const metaobjects = data.data?.metaobjects?.edges || [];
-        console.log(`Found ${metaobjects.length} collections metaobjects`);
+
         
         metaobjects.forEach((edge, index) => {
             const metaobject = edge.node;
-            console.log(`Metaobject #${index + 1}:`);
-            console.log(`- Handle: ${metaobject.handle}`);
-            console.log(`- ID: ${metaobject.id}`);
-            console.log(`- Type: ${metaobject.type}`);
-            console.log('- Fields:');
+
+
+
+
+
             metaobject.fields.forEach(field => {
-                console.log(`  - ${field.key}: ${field.value}`);
+
             });
         });
         
@@ -2812,7 +2651,7 @@ async function debugCollectionsMetaobjects() {
 // Function to debug a specific collection metaobject by handle
 async function debugCollectionByHandle(handle) {
     try {
-        console.log(`Debugging collection metaobject with handle: "${handle}"`);
+
         
         const query = `
             query {
@@ -2857,7 +2696,7 @@ async function debugCollectionByHandle(handle) {
         }
 
         const data = await response.json();
-        console.log(`Response for collection "${handle}":`, data);
+
         
         const metaobject = data.data?.metaobjects?.edges?.[0]?.node;
         if (!metaobject) {
@@ -2865,18 +2704,18 @@ async function debugCollectionByHandle(handle) {
             return null;
         }
         
-        console.log('Metaobject details:');
-        console.log(`- Handle: ${metaobject.handle}`);
-        console.log(`- ID: ${metaobject.id}`);
-        console.log(`- Type: ${metaobject.type}`);
-        console.log('- Fields:');
+
+
+
+
+
         
         metaobject.fields.forEach(field => {
-            console.log(`  - ${field.key} (${field.type}): ${field.value}`);
+
             if (field.reference) {
-                console.log(`    Reference:`, field.reference);
+
                 if (field.reference.image?.url) {
-                    console.log(`    Image URL: ${field.reference.image.url}`);
+
                 }
             }
         });
@@ -2935,7 +2774,7 @@ function findUrl(obj) {
 
 // Function to fetch a single metaobject by its GID using the singular metaobject query
 async function fetchSingleMetaobjectById(metaobjectId) {
-    console.log(`Attempting to fetch metaobject with ID: ${metaobjectId}`);
+
     
     // Use the singular metaobject query
     const query = `
@@ -2989,7 +2828,7 @@ async function fetchSingleMetaobjectById(metaobjectId) {
         }
         
         const metaobject = data.data?.metaobject;
-        console.log('Fetched Metaobject Data:', metaobject);
+
         
         if (!metaobject) {
             console.warn(`No metaobject found for ID: ${metaobjectId}`);
@@ -2997,7 +2836,7 @@ async function fetchSingleMetaobjectById(metaobjectId) {
         }
         
         // You can process the metaobject fields here if needed
-        console.log(`Successfully fetched metaobject: Handle=${metaobject.handle}, Type=${metaobject.type}`);
+
         
         return metaobject;
 
@@ -3010,10 +2849,10 @@ async function fetchSingleMetaobjectById(metaobjectId) {
 // Function to fetch product details for a list of product GIDs
 async function fetchReferencedProducts(productIds) {
     if (!productIds || productIds.length === 0) {
-        console.log('No product IDs provided to fetchReferencedProducts.');
+
         return [];
     }
-    console.log(`Fetching details for ${productIds.length} products by ID.`);
+
 
     // Use the nodes query to fetch multiple products by their GIDs
     const query = `
@@ -3082,7 +2921,7 @@ async function fetchReferencedProducts(productIds) {
 
         // Filter out any null results (e.g., if an ID was invalid)
         const products = data.data?.nodes?.filter(node => node !== null) || [];
-        console.log(`Successfully fetched ${products.length} product details.`);
+
         return products;
 
     } catch (error) {
@@ -3098,7 +2937,7 @@ function getMetaobjectField(metaobject, key) {
 
 // Function to fetch Collection Metaobject data and its referenced products by GID
 async function fetchCollectionDataByGid(metaobjectId) {
-    console.log(`Fetching collection data for Metaobject ID: ${metaobjectId}`);
+
     
     const metaobject = await fetchSingleMetaobjectById(metaobjectId);
     
@@ -3123,7 +2962,7 @@ async function fetchCollectionDataByGid(metaobjectId) {
     let imageUrl = '';
     let imageAlt = '';
     // Log the reference details BEFORE trying to extract
-    console.log('Image Field Reference Details:', imageField?.reference); 
+
     
     if (imageField?.reference) {
         if (imageField.reference.__typename === 'MediaImage') {
@@ -3150,10 +2989,10 @@ async function fetchCollectionDataByGid(metaobjectId) {
             productIds = [];
         }
     } else {
-        console.log('No products field found or it has no value.');
+
     }
     
-    console.log('Extracted Product GIDs:', productIds);
+
     
     // --- Fetch Referenced Products ---
     const products = await fetchReferencedProducts(productIds);
@@ -3167,8 +3006,8 @@ async function fetchCollectionDataByGid(metaobjectId) {
         imageAlt
     };
     
-    console.log('Final collection data prepared:', collectionData);
-    console.log(`Returning ${products.length} associated products.`);
+
+
     
     return {
         collection: collectionData,
@@ -3185,7 +3024,7 @@ async function displayCollectionMarquee(selector, collectionMetaobjectId) { // E
         return;
     }
 
-    console.log(`Displaying collection marquee for Metaobject ID: ${collectionMetaobjectId}`);
+
     // Fetch data using the GID
     const { collection, products, handle } = await fetchCollectionDataByGid(collectionMetaobjectId); // Destructure handle
     
@@ -3194,8 +3033,8 @@ async function displayCollectionMarquee(selector, collectionMetaobjectId) { // E
         return;
     }
     
-    console.log('Collection data received for display:', collection);
-    console.log('Products in collection received for display:', products.length);
+
+
     
     // --- Update HTML Elements (similar to before, but using fetched data) ---
     const collectionTitle = document.querySelector('.collection_heading');
@@ -3288,12 +3127,12 @@ async function displayCollectionMarquee(selector, collectionMetaobjectId) { // E
         marqueeTrack.appendChild(clone);
     }
     
-    console.log('Collection marquee display completed');
+
 }
 
 // Function to retrieve and list all available metaobject definitions and instances
 async function listAllMetaobjects() {
-    console.log("Attempting to list all available metaobjects...");
+
     
     const query = `
         query {
@@ -3344,40 +3183,40 @@ async function listAllMetaobjects() {
         }
 
         const data = await response.json();
-        console.log('Metaobject definitions:', data);
+
         
         const metaobjectDefinitions = data.data?.metaobjectDefinitions?.edges || [];
-        console.log(`Found ${metaobjectDefinitions.length} metaobject definitions`);
+
         
         metaobjectDefinitions.forEach((edge, index) => {
             const metaobjectDefinition = edge.node;
-            console.log(`Metaobject Definition #${index + 1}:`);
-            console.log(`- Name: ${metaobjectDefinition.name}`);
-            console.log(`- Type: ${metaobjectDefinition.type}`);
-            console.log('- Field Definitions:');
+
+
+
+
             metaobjectDefinition.fieldDefinitions.forEach(fieldDefinition => {
-                console.log(`  - Name: ${fieldDefinition.name}`);
-                console.log(`    Key: ${fieldDefinition.key}`);
-                console.log(`    Type: ${fieldDefinition.type.name}`);
+
+
+
             });
         });
         
         const metaobjects = data.data?.metaobjects?.edges || [];
-        console.log(`Found ${metaobjects.length} metaobjects`);
+
         
         metaobjects.forEach((edge, index) => {
             const metaobject = edge.node;
-            console.log(`Metaobject #${index + 1}:`);
-            console.log(`- Handle: ${metaobject.handle}`);
-            console.log(`- ID: ${metaobject.id}`);
-            console.log(`- Type: ${metaobject.type}`);
-            console.log('- Fields:');
+
+
+
+
+
             metaobject.fields.forEach(field => {
-                console.log(`  - ${field.key}: ${field.value}`);
+
                 if (field.reference) {
-                    console.log(`    Reference:`, field.reference);
+
                     if (field.reference.__typename === 'MediaImage' || field.reference.__typename === 'File') {
-                        console.log(`    Image URL: ${field.reference.image?.url || field.reference.url}`);
+
                     }
                 }
             });
@@ -3395,7 +3234,7 @@ async function listAllMetaobjects() {
 
 // Function to fetch Collections from the metaobject (including product GIDs)
 async function fetchCollectionsFromMetaobject() {
-    console.log('[fetchCollectionsFromMetaobject] Fetching collections from "collections" metaobject');
+
     try {
         // 1. Initial Query: Fetch metaobjects with basic fields + product GIDs list
         const initialQuery = `
@@ -3429,7 +3268,7 @@ async function fetchCollectionsFromMetaobject() {
         }
         
         const initialData = await initialResponse.json();
-        console.log('[fetchCollectionsFromMetaobject] Initial query response:', initialData);
+
         
         if (initialData.errors) {
             console.error('[fetchCollectionsFromMetaobject] GraphQL errors in initial query:', initialData.errors);
@@ -3438,7 +3277,7 @@ async function fetchCollectionsFromMetaobject() {
         
         const metaobjects = initialData.data?.metaobjects?.edges || [];
         if (metaobjects.length === 0) {
-             console.log('[fetchCollectionsFromMetaobject] No metaobjects of type "collections" found.');
+
              return [];
         }
         
@@ -3467,7 +3306,7 @@ async function fetchCollectionsFromMetaobject() {
                 console.warn(`[fetchCollectionsFromMetaobject] No 'products' field found for collection '${name}'.`);
             }
             
-            console.log(`[fetchCollectionsFromMetaobject] Processing collection: ${name}, Product GIDs: ${productGids.length}`);
+
 
             return {
                 id: node.id,
@@ -3477,11 +3316,101 @@ async function fetchCollectionsFromMetaobject() {
             };
         });
 
-        console.log('[fetchCollectionsFromMetaobject] Processed collections list (with productGids):', collectionsInfo);
+
         return collectionsInfo;
 
     } catch (error) {
         console.error('[fetchCollectionsFromMetaobject] Error fetching collections:', error);
         return [];
     }
+}
+
+// Function to create a product card with consistent structure
+function createProductCard(product, options = {}) {
+    const {
+        showTag = true,
+        tagText = '',
+        isTopSeller = false,
+        additionalClasses = '',
+        basePath = '',
+        onClick = null
+    } = options;
+
+
+
+
+    const price = product.priceRange.minVariantPrice.amount;
+    const currency = product.priceRange.minVariantPrice.currencyCode;
+    
+    // Get compare-at price if available
+    const variant = product.variants?.edges[0]?.node;
+
+
+    
+    const compareAtPrice = variant?.compareAtPrice?.amount;
+
+
+    
+    const hasCompareAtPrice = compareAtPrice && parseFloat(compareAtPrice) > parseFloat(price);
+
+    
+    // Get all images for the product
+    const images = product.images.edges.map(edge => edge.node);
+    const primaryImage = images[0]?.url || '';
+    const secondaryImage = (images.length > 1 ? images[1]?.url : images[0]?.url) || primaryImage;
+
+    // Determine if product is a top seller
+    const hasTopSellerTag = product.tags && product.tags.includes('top-seller');
+    const finalIsTopSeller = isTopSeller || hasTopSellerTag;
+    const finalTagText = tagText || (finalIsTopSeller ? 'best seller' : '');
+
+    // Create the product card element
+    const productCard = document.createElement('a');
+    productCard.href = `${basePath}/products/${product.handle}`;
+    productCard.setAttribute('data-product-handle', product.handle);
+    productCard.className = `product-card_link w-inline-block ${additionalClasses}`.trim();
+    
+    // Build the HTML structure
+    let priceHtml = '';
+    if (hasCompareAtPrice) {
+        priceHtml = `
+            <p data-commerce-type="variation-compare-at-price" class="text-size-large display-inline" style="text-decoration: line-through; opacity: 0.7; margin-right: 0.5rem;">${currency} ${compareAtPrice}</p>
+            <p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>
+        `;
+    } else {
+        priceHtml = `<p data-commerce-type="variation-price" class="text-size-large display-inline">${currency} ${price}</p>`;
+    }
+
+    productCard.innerHTML = `
+        <div data-inner-rad="top-left" class="product-card_tag" style="${showTag && finalTagText ? '' : 'display: none;'}">
+            <p class="text-weight-bold">${finalTagText}</p>
+        </div>
+        <div data-product-focus="" class="product-card_image-wrapper">
+            <img src="${secondaryImage}" 
+                 alt="${product.title}" 
+                 loading="lazy" 
+                 class="product-card_image on-model">
+            <img src="${primaryImage}" 
+                 alt="${product.title}" 
+                 loading="lazy" 
+                 class="product-card_image product-focus">
+        </div>
+        <div data-inner-rad="bottom-left" class="product-card_detail-wrapper">
+            <h6 class="display-inline">${product.title}</h6>
+            <div class="spacer-0d25"></div>
+            <div class="product-price-wrapper">
+                ${priceHtml}
+            </div>
+        </div>
+    `;
+
+    // Add click handler if provided
+    if (onClick) {
+        productCard.addEventListener('click', (e) => {
+            e.preventDefault();
+            onClick(product);
+        });
+    }
+
+    return productCard;
 }
