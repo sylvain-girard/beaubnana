@@ -136,8 +136,21 @@ function generateProductHTML(template, product) {
     
     // Insert product data in the template
     html = html.replace('<h1 class="heading-style-h3"></h1>', `<h1 class="heading-style-h3">${product.title}</h1>`);
-    html = html.replace('<div class="heading-style-h5"></div>', 
-                       `<div class="heading-style-h5">$${parseFloat(product.priceRange.minVariantPrice.amount).toFixed(2)}</div>`);
+
+    // --- Compare-at price logic ---
+    let priceHtml = '';
+    const price = parseFloat(product.priceRange.minVariantPrice.amount);
+    const currency = product.priceRange.minVariantPrice.currencyCode;
+    const variant = product.variants?.edges[0]?.node;
+    const compareAtPrice = variant && variant.compareAtPrice && variant.compareAtPrice.amount ? parseFloat(variant.compareAtPrice.amount) : null;
+    const hasCompareAtPrice = compareAtPrice && compareAtPrice > price;
+    if (hasCompareAtPrice) {
+        priceHtml = `<span style=\"text-decoration: line-through; opacity: 0.7; margin-right: 0.5rem;\">${currency} ${compareAtPrice}</span><span>${currency} ${price}</span>`;
+    } else {
+        priceHtml = `<span>${currency} ${price}</span>`;
+    }
+    html = html.replace('<div class="heading-style-h5"></div>', `<div class=\"heading-style-h5\">${priceHtml}</div>`);
+    // --- End compare-at price logic ---
     
     // Replace description, handling HTML safely
     if (product.description) {

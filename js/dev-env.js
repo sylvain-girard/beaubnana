@@ -4,19 +4,14 @@
  */
 (function() {
     // Check if environment is already set in localStorage
-    const storedEnv = localStorage.getItem('beaubananaEnv') || 'production';
-    console.log(`🔄 Beaubnana running in ${storedEnv.toUpperCase()} mode`);
-    
+    const storedEnv = localStorage.getItem('beaubananaEnv') || 'production';    
     // Create global window function to toggle environment
     window.setScriptsENV = function(env) {
         if (env !== 'local' && env !== 'production') {
-            console.error('❌ Invalid environment! Use "local" or "production"');
             return false;
         }
         
         localStorage.setItem('beaubananaEnv', env);
-        console.log(`✅ Environment switched to: ${env.toUpperCase()}`);
-        console.log('🔄 Reloading page to apply changes...');
         
         setTimeout(() => window.location.reload(), 500);
         return true;
@@ -31,11 +26,6 @@
             return '/beaubnana'; // GitHub Pages repository name
         }
     };
-    
-    // Print helpful instructions
-    console.log('ℹ️ To toggle development mode:');
-    console.log('   → Production mode: window.setScriptsENV("production")');
-    console.log('   → Local dev mode: window.setScriptsENV("local")');
     
     // Automatically patch include.js behavior based on environment
     document.addEventListener('DOMContentLoaded', function() {
