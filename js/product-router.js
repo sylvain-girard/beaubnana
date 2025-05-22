@@ -248,6 +248,21 @@ class ProductRouter {
         } else {
             console.error("Product component element (#product-component) not found! Cannot initialize Buy Button.");
         }
+
+        // Update og:image meta tag dynamically
+        const ogImageMeta = document.querySelector('meta[property="og:image"]#og-image-meta');
+        if (ogImageMeta) {
+            let ogImageUrl = '';
+            if (product.images.length >= 2) {
+                ogImageUrl = product.images[1].src;
+            } else if (product.images.length === 1) {
+                ogImageUrl = product.images[0].src;
+            }
+            ogImageMeta.setAttribute('content', ogImageUrl);
+            console.log('Set og:image meta tag to:', ogImageUrl);
+        } else {
+            console.warn('og:image meta tag not found in document head');
+        }
     }
 }
 
