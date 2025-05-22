@@ -10,7 +10,8 @@
     "build:policies": "node scripts/build-policy-pages.js",
     "update:config": "node update-config.js",
     "build:includes": "node scripts/include-common-elements.js",
-    "build": "npm run update:config && npm run build:products && npm run build:policies && npm run build:includes"
+    "build:homepage": "node scripts/build-homepage.js",
+    "build": "npm run update:config && npm run build:products && npm run build:policies && npm run build:includes && npm run build:homepage"
   },
   "keywords": [
     "shopify",
